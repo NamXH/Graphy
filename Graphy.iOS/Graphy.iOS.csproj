@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h%402x.png" />
+    <BundleResource Include="Images\TagsIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -116,5 +117,8 @@
       <Project>{BCD16658-26FC-4AEC-B624-ADF9C44D5D2A}</Project>
       <Name>Graphy.Core.iOS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Images\" />
   </ItemGroup>
 </Project>

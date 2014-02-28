@@ -122,6 +122,6 @@ namespace Graphy.Core
 
         public static void DoNothing()
         {
-        
+        }
     }
 }

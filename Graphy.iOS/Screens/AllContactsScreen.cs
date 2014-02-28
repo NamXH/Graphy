@@ -64,21 +64,13 @@ namespace Graphy.iOS
     public class AllContactsTableSource : UITableViewSource
     {
         string cellIdentifier = "TableCell";
-        string[] keys = new string[26];
+        string[] keys;
 
         List<String> m_items = new List<string>();
         Dictionary<string, List<String>> m_idxItems = new Dictionary<string, List<string>>();
 
         public AllContactsTableSource()
         {
-	    // Init keys
-            int count = 0;
-            for (char c = 'A'; c <= 'Z'; c++)
-            {
-                keys[count] = c.ToString();
-                count++;
-            }
-	    
             m_items.Add("foo foo");
             m_items.Add("bar bar");
             m_items.Add("baz baz");
