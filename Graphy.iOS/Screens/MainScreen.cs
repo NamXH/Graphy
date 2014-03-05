@@ -12,16 +12,6 @@ namespace Graphy.iOS
     {
         public MainScreen()
         {
-            // Database
-            try
-            {
-                DatabaseManager.DoNothing();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.InnerException.Message);
-            }
-
             var tab1 = new UIViewController();
             tab1.Title = "one";
 

@@ -70,13 +70,12 @@ namespace Graphy.Core
                 CreateDummyData(m_dbPath);
             }
         }
-
         // ## For tests
         public static void CreateDummyData(string dbPath)
         {
             using (var db = new SQLite.SQLiteConnection(dbPath))
             {
-                Debug.WriteLine("start add data");
+                Debug.WriteLine("start adding data");
 
                 // Contacts
                 var contact1 = new Contact();
@@ -93,6 +92,12 @@ namespace Graphy.Core
                 contact2.Organization = "Microsoft";
                 contact2.Birthday = new DateTime(1955, 11, 28);
                 db.Insert(contact2);
+
+                var contact3 = new Contact();
+                contact3.ContactId = 3;
+                contact3.FirstName = "ben";
+                contact3.LastName = "Afflect";
+                db.Insert(contact3);
 
                 // Phone numbers
                 var number1 = new PhoneNumber();
@@ -116,12 +121,16 @@ namespace Graphy.Core
                 number3.Type = "Home";
                 db.Insert(number3);
 
-                Debug.WriteLine("stop add data");
+                Debug.WriteLine("stop adding data");
             }
         }
 
-        public static void DoNothing()
+        public static IList<T> GetTable<T>() where T : new()
         {
+            using (var db = new SQLite.SQLiteConnection(m_dbPath))
+            {
+                return db.Table<T>().ToList();
+            }
         }
     }
 }

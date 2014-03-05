@@ -4,6 +4,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using System.Collections.Generic;
 using System.Linq;
+using Graphy.Core;
 
 namespace Graphy.iOS
 {
@@ -63,82 +64,87 @@ namespace Graphy.iOS
     /// </summary>
     public class AllContactsTableSource : UITableViewSource
     {
-        string cellIdentifier = "TableCell";
-        string[] keys;
-
-        List<String> m_items = new List<string>();
-        Dictionary<string, List<String>> m_idxItems = new Dictionary<string, List<string>>();
+        string m_cellId = "TableCell";
+        string[] m_keys = new string[26];
+        Dictionary<string, List<string>> m_items = new Dictionary<string, List<string>>();
 
         public AllContactsTableSource()
         {
-            m_items.Add("foo foo");
-            m_items.Add("bar bar");
-            m_items.Add("baz baz");
-
-            for (char c = 'a'; c <= 'z'; c++)
+            // Init index keys
+            var i = 0;
+            for (char c = 'A'; c <= 'Z'; c++)
             {
-                m_idxItems.Add(c.ToString(), new List<string>());
+                m_keys[i] = c.ToString();
+                i++;
             }
 
-            foreach (var t in m_items)
+            var contactList = DatabaseManager.GetTable<Contact>();
+
+            foreach (var contact in contactList)
             {
-                if (m_idxItems.ContainsKey(t[0].ToString()))
+                string firstName = contact.FirstName != null ? contact.FirstName+" " : "";
+                string middleName = contact.MiddleName != null ? contact.MiddleName+" " : "";
+                string lastName = contact.LastName != null ? contact.LastName : "";
+
+                var fullName = firstName + middleName + lastName;
+                var firstLetterUpper = Char.ToUpper(fullName[0]).ToString();
+
+                if (m_items.ContainsKey(firstLetterUpper))
                 {
-                    m_idxItems[t[0].ToString()].Add(t);
+                    m_items[firstLetterUpper].Add(fullName);
                 }
                 else
                 {
-                    //m_idxItems.Add(t[0].ToString(), new List<string>() { t });
+                    m_items.Add(firstLetterUpper, new List<string>() { fullName });
                 }
             }
-
-            keys = m_idxItems.Keys.ToArray();
-        }
-
-        public override int NumberOfSections(UITableView tableView)
-        {
-            return keys.Length;
         }
 
         public override string[] SectionIndexTitles(UITableView tableView)
         {
-            return keys;
+            return m_keys;
+        }
+
+        public override int NumberOfSections(UITableView tableView)
+        {
+            return m_items.Keys.Count;
         }
 
         public override int RowsInSection(UITableView tableview, int section)
         {
-            return m_idxItems[keys[section]].Count;
+            return m_items[m_keys[section]].Count;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            UITableViewCell cell = tableView.DequeueReusableCell(cellIdentifier);
+            UITableViewCell cell = tableView.DequeueReusableCell(m_cellId);
 
             if (cell == null)
             {
-                cell = new UITableViewCell(UITableViewCellStyle.Default, cellIdentifier);
+                cell = new UITableViewCell(UITableViewCellStyle.Default, m_cellId);
             }
-            cell.TextLabel.Text = m_idxItems[keys[indexPath.Section]][indexPath.Row];
+            cell.TextLabel.Text = m_items[m_keys[indexPath.Section]][indexPath.Row];
 
             return cell;
         }
 
         public override string TitleForHeader(UITableView tableView, int section)
         {
-            if (m_idxItems[keys[section]].Count > 0)
+            if (m_items[m_keys[section]].Count > 0)
             {
-                return keys[section].ToUpper();
+                return m_keys[section];
             }
             else
+            {
                 return null;
+            }
         }
 
-
-        //public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
-        //{
-        //    new UIAlertView("Row Selected", m_items[indexPath.Row], null, "OK", null).Show();
-        //    tableView.DeselectRow(indexPath, true);
-        //}
+        public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
+        {
+            new UIAlertView("Row Selected", m_items[m_keys[indexPath.Section]][indexPath.Row], null, "OK", null).Show();
+            tableView.DeselectRow(indexPath, true); // Remove the highlight
+        }
     }
 }
 
