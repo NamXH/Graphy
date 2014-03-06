@@ -12,16 +12,24 @@ namespace Graphy.iOS
     {
         public ContactDetailScreen(Contact contact) : base(UITableViewStyle.Grouped, null, true)
         {
-            var imagePath = contact.ImagePath != null ? "Images/" + contact.ImagePath : "Images/UnknownIcon.jpg";
+            Root = new RootElement("");
 
-            Root = new RootElement("")
+            var fullName = DatabaseHelper.GetFullName(contact);
+
+            // Profile pic & name & organization
+            if (!string.IsNullOrEmpty(fullName))
             {
+                var imagePath = contact.ImagePath != null ? "Images/" + contact.ImagePath : "Images/UnknownIcon.jpg";
                 new Section(contact.Organization)
                 {
-                    new BadgeElement(UIImage.FromBundle(imagePath), DatabaseHelper.GetFullName(contact)),
-                },
+                    new BadgeElement(UIImage.FromBundle(imagePath), fullName)
+                };
+            }
+            else
+            {
+                new Section(contact.Organization) { };
+            }
 
-            };
                 
             if (!DateTime.Equals(contact.Birthday, new DateTime(1, 1, 1)))
             {

@@ -100,6 +100,10 @@ namespace Graphy.Core
                 contact3.LastName = "Afflect";
                 db.Insert(contact3);
 
+                var contact4 = new Contact();
+                contact4.Id = 4;
+                contact4.Birthday = new DateTime(1911, 11, 11);
+
                 // Phone numbers
                 var number1 = new PhoneNumber();
                 number1.Id = 1;

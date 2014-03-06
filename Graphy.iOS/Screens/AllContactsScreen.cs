@@ -64,9 +64,9 @@ namespace Graphy.iOS
     /// </summary>
     public class AllContactsTableSource : UITableViewSource
     {
-        string m_cellId = "TableCell";
-        string[] m_keys = new string[26];
-        Dictionary<string, List<Contact>> m_items = new Dictionary<string, List<Contact>>();
+        string CellId = "TableCell";
+        string[] _keys = new string[27];
+        Dictionary<string, List<Contact>> _items = new Dictionary<string, List<Contact>>();
 
         public AllContactsTableSource()
         {
@@ -74,9 +74,10 @@ namespace Graphy.iOS
             var i = 0;
             for (char c = 'A'; c <= 'Z'; c++)
             {
-                m_keys[i] = c.ToString();
+                _keys[i] = c.ToString();
                 i++;
             }
+            _keys[i] = "#";
 
             var contactList = DatabaseManager.GetRows<Contact>();
 
@@ -86,50 +87,50 @@ namespace Graphy.iOS
                 var firstLetter = firstNotNullName[0];
                 var firstLetterUpper = Char.ToUpper(firstLetter).ToString();
 
-                if (m_items.ContainsKey(firstLetterUpper))
+                if (_items.ContainsKey(firstLetterUpper))
                 {
-                    m_items[firstLetterUpper].Add(contact);
+                    _items[firstLetterUpper].Add(contact);
                 }
                 else
                 {
-                    m_items.Add(firstLetterUpper, new List<Contact>() { contact });
+                    _items.Add(firstLetterUpper, new List<Contact>() { contact });
                 }
             }
         }
 
         public override string[] SectionIndexTitles(UITableView tableView)
         {
-            return m_keys;
+            return _keys;
         }
 
         public override int NumberOfSections(UITableView tableView)
         {
-            return m_items.Keys.Count;
+            return _items.Keys.Count;
         }
 
         public override int RowsInSection(UITableView tableview, int section)
         {
-            return m_items[m_keys[section]].Count;
+            return _items[_keys[section]].Count;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            UITableViewCell cell = tableView.DequeueReusableCell(m_cellId);
+            UITableViewCell cell = tableView.DequeueReusableCell(CellId);
 
             if (cell == null)
             {
-                cell = new UITableViewCell(UITableViewCellStyle.Default, m_cellId);
+                cell = new UITableViewCell(UITableViewCellStyle.Default, CellId);
             }
-            cell.TextLabel.Text = DatabaseHelper.GetFullName(m_items[m_keys[indexPath.Section]][indexPath.Row]);
+            cell.TextLabel.Text = DatabaseHelper.GetFullName(_items[_keys[indexPath.Section]][indexPath.Row]);
 
             return cell;
         }
 
         public override string TitleForHeader(UITableView tableView, int section)
         {
-            if (m_items[m_keys[section]].Count > 0)
+            if (_items[_keys[section]].Count > 0)
             {
-                return m_keys[section];
+                return _keys[section];
             }
             else
             {
@@ -139,7 +140,7 @@ namespace Graphy.iOS
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            ContactDetailScreen contactDetail = new ContactDetailScreen(m_items[m_keys[indexPath.Section]][indexPath.Row]);
+            ContactDetailScreen contactDetail = new ContactDetailScreen(_items[_keys[indexPath.Section]][indexPath.Row]);
             AppDelegate.RootNavigationController.PushViewController(contactDetail, true);
         }
     }
