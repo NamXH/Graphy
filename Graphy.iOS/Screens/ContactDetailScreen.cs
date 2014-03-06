@@ -27,6 +27,7 @@ namespace Graphy.iOS
             {
                 Root.Add(new Section("Birthday") { new StringElement(contact.Birthday.ToShortDateString()) });
             }
+
         }
     }
 }

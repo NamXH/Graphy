@@ -7,12 +7,17 @@ using System.Threading.Tasks;
 
 namespace Graphy.Core
 {
+    public interface IPrimaryKeyContainer
+    {
+        int Id { get; set; }
+    }
+
     public interface IContactIdRelated
     {
         int ContactId { get; set; }
     }
 
-    public class Contact
+    public class Contact : IPrimaryKeyContainer
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -30,7 +35,7 @@ namespace Graphy.Core
         public DateTime Birthday { get; set; }
     }
 
-    public class PhoneNumber : IContactIdRelated
+    public class PhoneNumber : IPrimaryKeyContainer, IContactIdRelated
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -42,7 +47,7 @@ namespace Graphy.Core
         public int ContactId { get; set; }
     }
 
-    public class Country
+    public class Country : IPrimaryKeyContainer
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -50,7 +55,7 @@ namespace Graphy.Core
         public string Name { get; set; }
     }
 
-    public class Address : IContactIdRelated
+    public class Address : IPrimaryKeyContainer, IContactIdRelated
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -70,7 +75,7 @@ namespace Graphy.Core
         public int CountryId { get; set; }
     }
 
-    public class Email : IContactIdRelated
+    public class Email : IPrimaryKeyContainer, IContactIdRelated
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -82,7 +87,7 @@ namespace Graphy.Core
         public int ContactId { get; set; }
     }
 
-    public class SpecialDate : IContactIdRelated
+    public class SpecialDate : IPrimaryKeyContainer, IContactIdRelated
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -94,7 +99,7 @@ namespace Graphy.Core
         public int ContactId { get; set; }
     }
 
-    public class Url : IContactIdRelated
+    public class Url : IPrimaryKeyContainer, IContactIdRelated
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -106,7 +111,7 @@ namespace Graphy.Core
         public int ContactId { get; set; }
     }
 
-    public class InstantMessage : IContactIdRelated
+    public class InstantMessage : IPrimaryKeyContainer, IContactIdRelated
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -118,7 +123,7 @@ namespace Graphy.Core
         public int ContactId { get; set; }
     }
 
-    public class Organization
+    public class Organization : IPrimaryKeyContainer
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -126,7 +131,7 @@ namespace Graphy.Core
         public string Name { get; set; }
     }
 
-    public class ContactOrganizationMap : IContactIdRelated
+    public class ContactOrganizationMap : IPrimaryKeyContainer, IContactIdRelated
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -136,7 +141,7 @@ namespace Graphy.Core
         public int OrganizationId { get; set; }
     }
 
-    public class Tag
+    public class Tag : IPrimaryKeyContainer
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -146,7 +151,7 @@ namespace Graphy.Core
         public string ExtraInfo { get; set; }
     }
 
-    public class ContactTagMap : IContactIdRelated
+    public class ContactTagMap : IPrimaryKeyContainer, IContactIdRelated
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -156,7 +161,7 @@ namespace Graphy.Core
         public int TagId { get; set; }
     }
 
-    public class ConnectionType
+    public class ConnectionType : IPrimaryKeyContainer
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -164,7 +169,7 @@ namespace Graphy.Core
         public string Name { get; set; }
     }
 
-    public class Connection
+    public class Connection : IPrimaryKeyContainer
     {
         [PrimaryKey]
         public int Id { get; set; }

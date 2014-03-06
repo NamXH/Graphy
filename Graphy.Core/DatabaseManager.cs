@@ -133,11 +133,19 @@ namespace Graphy.Core
             }
         }
 
-        public static IList<T> GetRowsRelatedToContact<T>() where T : new()
+        public static IList<T> GetRows<T>() where T : new()
         {
             using (var db = new SQLite.SQLiteConnection(_dbPath))
             {
                 return db.Table<T>().ToList();
+            }
+        }
+
+        public static T GetRows<T>(int primaryKey) where T : IPrimaryKeyContainer, new()
+        {
+            using (var db = new SQLite.SQLiteConnection(_dbPath))
+            {
+                return db.Table<T>().Where(v => v.Id == primaryKey).FirstOrDefault();
             }
         }
 

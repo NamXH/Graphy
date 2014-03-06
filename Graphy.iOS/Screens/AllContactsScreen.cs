@@ -78,7 +78,7 @@ namespace Graphy.iOS
                 i++;
             }
 
-            var contactList = DatabaseManager.GetRowsRelatedToContact<Contact>();
+            var contactList = DatabaseManager.GetRows<Contact>();
 
             foreach (var contact in contactList)
             {
