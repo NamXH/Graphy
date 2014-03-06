@@ -91,6 +91,7 @@ namespace Graphy.Core
                 contact2.LastName = "Gates";
                 contact2.Organization = "Microsoft";
                 contact2.Birthday = new DateTime(1955, 11, 28);
+                contact2.ImagePath = "BillGates.JPG";
                 db.Insert(contact2);
 
                 var contact3 = new Contact();

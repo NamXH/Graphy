@@ -36,7 +36,7 @@ namespace Graphy.iOS
             base.ViewDidLoad();
 
             // Add buttons & name to Navigation Bar
-            var leftButton = new UIBarButtonItem(UIImage.FromBundle("Images/TagsIcon.png"), UIBarButtonItemStyle.Plain, LeftButtonClicked);
+            var leftButton = new UIBarButtonItem(UIImage.FromBundle("Icons/TagsIcon.png"), UIBarButtonItemStyle.Plain, LeftButtonClicked);
             NavigationItem.LeftBarButtonItem = leftButton;
             var rightButton = new UIBarButtonItem(UIBarButtonSystemItem.Add, RightButtonClicked);
             NavigationItem.RightBarButtonItem = rightButton;
@@ -70,8 +70,7 @@ namespace Graphy.iOS
         string m_cellId = "TableCell";
         string[] m_keys = new string[26];
         Dictionary<string, List<Contact>> m_items = new Dictionary<string, List<Contact>>();
-
-        UINavigationController m_rootNavigationController; 
+        UINavigationController m_rootNavigationController;
 
         public AllContactsTableSource(UINavigationController nav)
         {
@@ -89,7 +88,7 @@ namespace Graphy.iOS
 
             foreach (var contact in contactList)
             {
-                var firstNotNullName = new string[]{contact.FirstName, contact.MiddleName, contact.LastName}.FirstOrDefault(s => !string.IsNullOrEmpty(s)) ?? " ";
+                var firstNotNullName = new string[]{ contact.FirstName, contact.MiddleName, contact.LastName }.FirstOrDefault(s => !string.IsNullOrEmpty(s)) ?? " ";
                 var firstLetter = firstNotNullName[0];
                 var firstLetterUpper = Char.ToUpper(firstLetter).ToString();
 
@@ -149,8 +148,6 @@ namespace Graphy.iOS
             ContactDetailScreen contactDetail = new ContactDetailScreen(m_items[m_keys[indexPath.Section]][indexPath.Row]);
             m_rootNavigationController.PushViewController(contactDetail, true);
         }
-
-
     }
 }
 
