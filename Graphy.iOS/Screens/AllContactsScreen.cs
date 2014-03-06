@@ -69,7 +69,7 @@ namespace Graphy.iOS
     {
         string m_cellId = "TableCell";
         string[] m_keys = new string[26];
-        Dictionary<string, List<string>> m_items = new Dictionary<string, List<string>>();
+        Dictionary<string, List<Contact>> m_items = new Dictionary<string, List<Contact>>();
 
         UINavigationController m_rootNavigationController; 
 
@@ -89,20 +89,17 @@ namespace Graphy.iOS
 
             foreach (var contact in contactList)
             {
-                string firstName = contact.FirstName != null ? contact.FirstName+" " : "";
-                string middleName = contact.MiddleName != null ? contact.MiddleName+" " : "";
-                string lastName = contact.LastName != null ? contact.LastName : "";
-
-                var fullName = firstName + middleName + lastName;
-                var firstLetterUpper = Char.ToUpper(fullName[0]).ToString();
+                var firstNotNullName = new string[]{contact.FirstName, contact.MiddleName, contact.LastName}.FirstOrDefault(s => !string.IsNullOrEmpty(s)) ?? " ";
+                var firstLetter = firstNotNullName[0];
+                var firstLetterUpper = Char.ToUpper(firstLetter).ToString();
 
                 if (m_items.ContainsKey(firstLetterUpper))
                 {
-                    m_items[firstLetterUpper].Add(fullName);
+                    m_items[firstLetterUpper].Add(contact);
                 }
                 else
                 {
-                    m_items.Add(firstLetterUpper, new List<string>() { fullName });
+                    m_items.Add(firstLetterUpper, new List<Contact>() { contact });
                 }
             }
         }
@@ -130,7 +127,7 @@ namespace Graphy.iOS
             {
                 cell = new UITableViewCell(UITableViewCellStyle.Default, m_cellId);
             }
-            cell.TextLabel.Text = m_items[m_keys[indexPath.Section]][indexPath.Row];
+            cell.TextLabel.Text = DatabaseHelper.GetFullName(m_items[m_keys[indexPath.Section]][indexPath.Row]);
 
             return cell;
         }
@@ -149,9 +146,11 @@ namespace Graphy.iOS
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-//            ContactDetailScreen contactDetail = new ContactDetailScreen(m_items[m_keys[indexPath.Section]][indexPath.Row]);
+            ContactDetailScreen contactDetail = new ContactDetailScreen(m_items[m_keys[indexPath.Section]][indexPath.Row]);
             m_rootNavigationController.PushViewController(contactDetail, true);
         }
+
+
     }
 }
 

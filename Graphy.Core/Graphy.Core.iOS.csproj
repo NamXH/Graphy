@@ -41,7 +41,8 @@
     <Compile Include="DatabaseManager.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
-    <Compile Include="DbObjects.cs" />
+    <Compile Include="DatabaseHelper.cs" />
+    <Compile Include="DatabaseObjects.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
