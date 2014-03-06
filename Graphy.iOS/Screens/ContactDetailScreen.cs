@@ -22,9 +22,7 @@ namespace Graphy.iOS
                 },
 
             };
-
-
-
+                
             if (!DateTime.Equals(contact.Birthday, new DateTime(1, 1, 1)))
             {
                 Root.Add(new Section("Birthday") { new StringElement(contact.Birthday.ToShortDateString()) });

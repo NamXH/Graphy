@@ -10,17 +10,14 @@ namespace Graphy.iOS
 {
     public partial class AllContactsScreen : UIViewController
     {
-        UINavigationController m_rootNavigationController;
-
         static bool UserInterfaceIdiomIsPhone
         {
             get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
         }
 
-        public AllContactsScreen(UINavigationController rootNav)
+        public AllContactsScreen()
             : base(UserInterfaceIdiomIsPhone ? "AllContactsScreen_iPhone" : "AllContactsScreen_iPad", null)
         {
-            m_rootNavigationController = rootNav;
         }
 
         public override void DidReceiveMemoryWarning()
@@ -46,7 +43,7 @@ namespace Graphy.iOS
             searchBar.SearchButtonClicked += SearchButtonClicked;
 
             // Contacts table
-            contactsTable.Source = new AllContactsTableSource(m_rootNavigationController);
+            contactsTable.Source = new AllContactsTableSource();
         }
 
         void LeftButtonClicked(object sender, EventArgs e)
@@ -70,12 +67,9 @@ namespace Graphy.iOS
         string m_cellId = "TableCell";
         string[] m_keys = new string[26];
         Dictionary<string, List<Contact>> m_items = new Dictionary<string, List<Contact>>();
-        UINavigationController m_rootNavigationController;
 
-        public AllContactsTableSource(UINavigationController nav)
+        public AllContactsTableSource()
         {
-            m_rootNavigationController = nav;
-
             // Init index keys
             var i = 0;
             for (char c = 'A'; c <= 'Z'; c++)
@@ -84,7 +78,7 @@ namespace Graphy.iOS
                 i++;
             }
 
-            var contactList = DatabaseManager.GetTable<Contact>();
+            var contactList = DatabaseManager.GetRowsRelatedToContact<Contact>();
 
             foreach (var contact in contactList)
             {
@@ -146,7 +140,7 @@ namespace Graphy.iOS
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
             ContactDetailScreen contactDetail = new ContactDetailScreen(m_items[m_keys[indexPath.Section]][indexPath.Row]);
-            m_rootNavigationController.PushViewController(contactDetail, true);
+            AppDelegate.RootNavigationController.PushViewController(contactDetail, true);
         }
     }
 }
