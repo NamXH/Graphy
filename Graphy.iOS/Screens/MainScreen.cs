@@ -12,13 +12,20 @@ namespace Graphy.iOS
     {
         public MainScreen()
         {
+        }
+
+        public void CreateTabs()
+        {
             var tab1 = new UIViewController();
             tab1.Title = "one";
 
-            var allContactsScreen = new AllContactsScreen();
+            var allContactsScreen = new AllContactsScreen(this.NavigationController);
             var tab2 = new UINavigationController(allContactsScreen);
             tab2.Title = "Contacts";
             tab2.TabBarItem = new UITabBarItem(UITabBarSystemItem.Contacts, 0);
+
+//            var tab2 = new UIViewController();
+//            tab2.Title = "Two";
 
             var tab3 = new UIViewController();
             tab3.Title = "three";

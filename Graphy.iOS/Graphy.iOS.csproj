@@ -90,6 +90,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
+    <Reference Include="MonoTouch.Dialog-1" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h%402x.png" />
@@ -105,6 +106,7 @@
     <Compile Include="Screens\AllContactsScreen.cs" />
     <Compile Include="Screens\AllContactsScreen.designer.cs" />
     <Compile Include="Screens\MainScreen.cs" />
+    <Compile Include="Screens\ContactDetailScreen.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup />

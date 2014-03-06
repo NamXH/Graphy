@@ -10,14 +10,17 @@ namespace Graphy.iOS
 {
     public partial class AllContactsScreen : UIViewController
     {
+        UINavigationController m_rootNavigationController;
+
         static bool UserInterfaceIdiomIsPhone
         {
             get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
         }
 
-        public AllContactsScreen()
+        public AllContactsScreen(UINavigationController rootNav)
             : base(UserInterfaceIdiomIsPhone ? "AllContactsScreen_iPhone" : "AllContactsScreen_iPad", null)
         {
+            m_rootNavigationController = rootNav;
         }
 
         public override void DidReceiveMemoryWarning()
@@ -43,7 +46,7 @@ namespace Graphy.iOS
             searchBar.SearchButtonClicked += SearchButtonClicked;
 
             // Contacts table
-            contactsTable.Source = new AllContactsTableSource();
+            contactsTable.Source = new AllContactsTableSource(m_rootNavigationController);
         }
 
         void LeftButtonClicked(object sender, EventArgs e)
@@ -68,8 +71,12 @@ namespace Graphy.iOS
         string[] m_keys = new string[26];
         Dictionary<string, List<string>> m_items = new Dictionary<string, List<string>>();
 
-        public AllContactsTableSource()
+        UINavigationController m_rootNavigationController; 
+
+        public AllContactsTableSource(UINavigationController nav)
         {
+            m_rootNavigationController = nav;
+
             // Init index keys
             var i = 0;
             for (char c = 'A'; c <= 'Z'; c++)
@@ -142,8 +149,8 @@ namespace Graphy.iOS
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            new UIAlertView("Row Selected", m_items[m_keys[indexPath.Section]][indexPath.Row], null, "OK", null).Show();
-            tableView.DeselectRow(indexPath, true); // Remove the highlight
+//            ContactDetailScreen contactDetail = new ContactDetailScreen(m_items[m_keys[indexPath.Section]][indexPath.Row]);
+            m_rootNavigationController.PushViewController(contactDetail, true);
         }
     }
 }
