@@ -123,7 +123,7 @@ namespace Graphy.Core
 
                 var contact8 = new Contact();
                 contact8.Id = 8;
-                contact8.FirstName = "888";
+                contact8.FirstName = "George";
                 db.Insert(contact8);
 
                 var contact9 = new Contact();

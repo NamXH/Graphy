@@ -93,16 +93,6 @@ namespace Graphy.iOS
 
         public override string[] SectionIndexTitles(UITableView tableView)
         {
-//            var index = new string[27];
-//            var count = 0;
-//            for (char c = 'A'; c <= 'Z'; c++)
-//            {
-//                index[count] = c.ToString();
-//                count++;
-//            }
-//            index[26] = "#";
-//            return index;
-
             return _keys;
         }
 
