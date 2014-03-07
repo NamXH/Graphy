@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -22,7 +22,7 @@
                     <textInputTraits key="textInputTraits"/>
                 </searchBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="5sC-Cn-fXL">
-                    <rect key="frame" x="0.0" y="108" width="320" height="372"/>
+                    <rect key="frame" x="0.0" y="108" width="320" height="323"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
@@ -34,7 +34,7 @@
                 <constraint firstItem="5sC-Cn-fXL" firstAttribute="top" secondItem="bdc-Oa-dAK" secondAttribute="bottom" id="fo2-TJ-R2e"/>
                 <constraint firstItem="bdc-Oa-dAK" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="ktQ-6e-VTq"/>
                 <constraint firstItem="bdc-Oa-dAK" firstAttribute="top" secondItem="1" secondAttribute="top" constant="64" id="ntj-kb-mNx"/>
-                <constraint firstAttribute="bottom" secondItem="5sC-Cn-fXL" secondAttribute="bottom" id="omR-RM-gyo"/>
+                <constraint firstAttribute="bottom" secondItem="5sC-Cn-fXL" secondAttribute="bottom" constant="49" id="omR-RM-gyo"/>
                 <constraint firstAttribute="trailing" secondItem="bdc-Oa-dAK" secondAttribute="trailing" id="uep-3Z-GXS"/>
                 <constraint firstItem="5sC-Cn-fXL" firstAttribute="top" secondItem="bdc-Oa-dAK" secondAttribute="bottom" id="zjy-Ah-Rx6"/>
             </constraints>

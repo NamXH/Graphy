@@ -102,7 +102,39 @@ namespace Graphy.Core
 
                 var contact4 = new Contact();
                 contact4.Id = 4;
+                contact4.FirstName = "Howard";
                 contact4.Birthday = new DateTime(1911, 11, 11);
+                db.Insert(contact4);
+
+                var contact5 = new Contact();
+                contact5.Id = 5;
+                contact5.FirstName = "Zelda";
+                db.Insert(contact5);
+
+                var contact6 = new Contact();
+                contact6.Id = 6;
+                contact6.FirstName = "Young";
+                db.Insert(contact6);
+
+                var contact7 = new Contact();
+                contact7.Id = 7;
+                contact7.FirstName = "Maple";
+                db.Insert(contact7);
+
+                var contact8 = new Contact();
+                contact8.Id = 8;
+                contact8.FirstName = "888";
+                db.Insert(contact8);
+
+                var contact9 = new Contact();
+                contact9.Id = 9;
+                contact9.FirstName = "9";
+                db.Insert(contact9);
+
+                var contact10 = new Contact();
+                contact10.Id = 10;
+                contact10.FirstName = "101010";
+                db.Insert(contact10);
 
                 // Phone numbers
                 var number1 = new PhoneNumber();

@@ -70,22 +70,13 @@ namespace Graphy.iOS
 
         public AllContactsTableSource()
         {
-            // Init index keys
-            var i = 0;
-            for (char c = 'A'; c <= 'Z'; c++)
-            {
-                _keys[i] = c.ToString();
-                i++;
-            }
-            _keys[i] = "#";
-
             var contactList = DatabaseManager.GetRows<Contact>();
 
             foreach (var contact in contactList)
             {
                 var firstNotNullName = new string[]{ contact.FirstName, contact.MiddleName, contact.LastName }.FirstOrDefault(s => !string.IsNullOrEmpty(s)) ?? " ";
                 var firstLetter = firstNotNullName[0];
-                var firstLetterUpper = Char.ToUpper(firstLetter).ToString();
+                var firstLetterUpper = char.IsLetter(firstLetter) ? char.ToUpper(firstLetter).ToString() : "#";
 
                 if (_items.ContainsKey(firstLetterUpper))
                 {
@@ -96,10 +87,22 @@ namespace Graphy.iOS
                     _items.Add(firstLetterUpper, new List<Contact>() { contact });
                 }
             }
+            _keys = _items.Keys.ToArray();
+            Array.Sort(_keys);
         }
 
         public override string[] SectionIndexTitles(UITableView tableView)
         {
+//            var index = new string[27];
+//            var count = 0;
+//            for (char c = 'A'; c <= 'Z'; c++)
+//            {
+//                index[count] = c.ToString();
+//                count++;
+//            }
+//            index[26] = "#";
+//            return index;
+
             return _keys;
         }
 
