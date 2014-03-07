@@ -20,10 +20,10 @@ namespace Graphy.iOS
             if (!string.IsNullOrEmpty(fullName))
             {
                 var imagePath = contact.ImagePath != null ? "Images/" + contact.ImagePath : "Images/UnknownIcon.jpg";
-                new Section(contact.Organization)
+                Root.Add(new Section(contact.Organization)
                 {
                     new BadgeElement(UIImage.FromBundle(imagePath), fullName)
-                };
+                });
             }
             else
             {

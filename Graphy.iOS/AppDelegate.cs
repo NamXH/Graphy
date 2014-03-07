@@ -33,6 +33,7 @@ namespace Graphy.iOS
 
             // If you have defined a root view controller, set it here:
             _window.RootViewController = RootNavigationController;
+//            _window.RootViewController = mainScreen;
 
             // make the window visible
             _window.MakeKeyAndVisible();
