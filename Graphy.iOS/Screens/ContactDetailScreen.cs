@@ -38,18 +38,8 @@ namespace Graphy.iOS
             }
 
             // Phone numbers
-            var numbers = DatabaseManager.GetRowsRelatedToContact<PhoneNumber>(contact.Id);
-            if (numbers.Count > 0)
-            {
-                foreach (var number in numbers)
-                {
-                    var sec = new Section(number.Type)
-                    {
-                        new StringElement(number.Number),
-                    };
-                    Root.Add(sec);
-                }
-            }
+            var numbers = DatabaseManager.GetRowsRelatedToContact<PhoneNumber>(contact.Id).ToList();
+            CreateUiList<PhoneNumber>(numbers, x => x.Type, x => x.Number);
 
             // Addresses
             var addresses = DatabaseManager.GetRowsRelatedToContact<Address>(contact.Id);
@@ -88,31 +78,32 @@ namespace Graphy.iOS
                 }
             }
 
-            // Email
-            var emails = DatabaseManager.GetRowsRelatedToContact<Email>(contact.Id);
-            if (emails.Count > 0)
-            {
-//                CreateUiList<Email>(emails, x => x.Address, x => x.Type))
-                foreach (var email in emails)
-                {
-                    var sec = new Section(email.Type)
-                    {
-                        new StringElement(email.Address),
-                    };
-                    Root.Add(sec);
-                }
-            }
+            // Emails
+            var emails = DatabaseManager.GetRowsRelatedToContact<Email>(contact.Id).ToList();
+            CreateUiList<Email>(emails, x => x.Type, x => x.Address);
+
+            // Urls
+            var urls = DatabaseManager.GetRowsRelatedToContact<Url>(contact.Id).ToList();
+            CreateUiList<Url>(urls, x => x.Type, x => x.Link);
+
+            // Instant Message
+            var instantMessages = DatabaseManager.GetRowsRelatedToContact<InstantMessage>(contact.Id).ToList();
+            CreateUiList<InstantMessage>(instantMessages, x => x.Type, x => x.Nickname);
+
+            // Special Dates
+            var dates = DatabaseManager.GetRowsRelatedToContact<SpecialDate>(contact.Id).ToList();
+            CreateUiList<SpecialDate>(dates, x => x.Type, x => x.Date.ToShortDateString());
         }
 
-        void CreateUiList<T>(List<T> list, Func<T, string> strFunc, Func<T, string> secNameFunc)
+        void CreateUiList<T>(List<T> list, Func<T, string> sectionNameFunc, Func<T, string> elementName)
         {
             foreach (var x in list)
             {
-                var sec = new Section(secNameFunc(x))
+                var section = new Section(sectionNameFunc(x))
                 {
-                    new StringElement(strFunc(x))
+                    new StringElement(elementName(x))
                 };
-                Root.Add(sec);
+                Root.Add(section);
             }
         }
 

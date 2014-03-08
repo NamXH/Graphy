@@ -46,7 +46,7 @@ namespace Graphy.Core
                     db.Execute(createEmail);
                     var createSpecialDate = "CREATE TABLE \"SpecialDate\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"Date\" DATETIME, \"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createSpecialDate);
-                    var createUrl = "CREATE TABLE \"Url\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL  DEFAULT (null) ,\"Type\" VARCHAR,\"Address\" VARCHAR,\"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
+                    var createUrl = "CREATE TABLE \"Url\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL, \"Type\" VARCHAR, \"Link\" VARCHAR, \"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createUrl);
                     var createInstantMessage = "CREATE TABLE \"InstantMessage\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"Nickname\" VARCHAR, \"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createInstantMessage);
@@ -181,6 +181,37 @@ namespace Graphy.Core
                 email1.Type = "Work";
                 email1.ContactId = 2;
                 db.Insert(email1);
+
+                // Url
+                var url1 = new Url();
+                url1.Id = 1;
+                url1.Type = "Blog";
+                url1.Link = "billgates.com";
+                url1.ContactId = 2;
+                db.Insert(url1);
+
+                var url2 = new Url();
+                url2.Id = 2;
+                url2.Type = "Philanthropy";
+                url2.Link = "billandmelinda.org";
+                url2.ContactId = 2;
+                db.Insert(url2);
+
+                // IMs
+                var im1 = new InstantMessage();
+                im1.Id = 1;
+                im1.Type = "Skype";
+                im1.Nickname = "billgates";
+                im1.ContactId = 2;
+                db.Insert(im1);
+
+                // Special Dates
+                var date1 = new SpecialDate();
+                date1.Id = 1;
+                date1.Type = "Founded Microsoft";
+                date1.Date = new DateTime(1975, 4, 4);
+                date1.ContactId = 2;
+                db.Insert(date1);
 
                 Debug.WriteLine("stop adding data");
             }
