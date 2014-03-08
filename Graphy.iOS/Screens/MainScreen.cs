@@ -10,6 +10,8 @@ namespace Graphy.iOS
 {
     public class MainScreen : UITabBarController
     {
+        UIViewController[] _tabs;
+
         public MainScreen()
         {
             var tab1 = new UIViewController();
@@ -29,8 +31,8 @@ namespace Graphy.iOS
             var tab4 = new UIViewController();
             tab4.Title = "four";
 
-            var tabs = new UIViewController[] { tab1, tab2, tab3, tab4 };
-            this.ViewControllers = tabs;
+            _tabs = new UIViewController[] { tab1, tab2, tab3, tab4 };
+            this.ViewControllers = _tabs;
             this.SelectedViewController = tab2;
         }
     }

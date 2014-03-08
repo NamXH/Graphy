@@ -43,7 +43,7 @@ namespace Graphy.iOS
             searchBar.SearchButtonClicked += SearchButtonClicked;
 
             // Contacts table
-            contactsTable.Source = new AllContactsTableSource();
+            contactsTable.Source = new AllContactsTableSource(NavigationController);
         }
 
         void LeftButtonClicked(object sender, EventArgs e)
@@ -64,12 +64,16 @@ namespace Graphy.iOS
     /// </summary>
     public class AllContactsTableSource : UITableViewSource
     {
+        UINavigationController _tableScreenNavigation;
+
         string CellId = "TableCell";
         string[] _keys = new string[27];
         Dictionary<string, List<Contact>> _items = new Dictionary<string, List<Contact>>();
 
-        public AllContactsTableSource()
+        public AllContactsTableSource(UINavigationController tableScreenNavigation)
         {
+            _tableScreenNavigation = tableScreenNavigation;
+
             var contactList = DatabaseManager.GetRows<Contact>();
 
             foreach (var contact in contactList)
@@ -134,7 +138,7 @@ namespace Graphy.iOS
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
             ContactDetailScreen contactDetail = new ContactDetailScreen(_items[_keys[indexPath.Section]][indexPath.Row]);
-            AppDelegate.RootNavigationController.PushViewController(contactDetail, true);
+            _tableScreenNavigation.PushViewController(contactDetail, true);
         }
     }
 }

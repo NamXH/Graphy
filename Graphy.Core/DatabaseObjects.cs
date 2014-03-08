@@ -33,6 +33,8 @@ namespace Graphy.Core
         public string ImagePath { get; set; }
 
         public DateTime Birthday { get; set; }
+
+        public bool Favourite { get; set; }
     }
 
     public class PhoneNumber : IPrimaryKeyContainer, IContactIdRelated
@@ -47,14 +49,6 @@ namespace Graphy.Core
         public int ContactId { get; set; }
     }
 
-    public class Country : IPrimaryKeyContainer
-    {
-        [PrimaryKey]
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-    }
-
     public class Address : IPrimaryKeyContainer, IContactIdRelated
     {
         [PrimaryKey]
@@ -66,13 +60,15 @@ namespace Graphy.Core
 
         public string StreetLine2 { get; set; }
 
+        public string City { get; set; }
+
         public string Province { get; set; }
 
         public string PostalCode { get; set; }
 
-        public int ContactId { get; set; }
+        public string Country { get; set; }
 
-        public int CountryId { get; set; }
+        public int ContactId { get; set; }
     }
 
     public class Email : IPrimaryKeyContainer, IContactIdRelated

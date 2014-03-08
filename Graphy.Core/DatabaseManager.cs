@@ -36,13 +36,11 @@ namespace Graphy.Core
                     db.Execute(foreignKeyOn);
 
                     // Create tables using SQL commands
-                    var createContact = "CREATE TABLE \"Contact\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"FirstName\" VARCHAR, \"MiddleName\" VARCHAR, \"LastName\" VARCHAR, \"Organization\" VARCHAR, \"ImagePath\" VARCHAR, \"Birthday\" DATETIME)";
+                    var createContact = "CREATE TABLE \"Contact\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"FirstName\" VARCHAR, \"MiddleName\" VARCHAR, \"LastName\" VARCHAR, \"Organization\" VARCHAR, \"ImagePath\" VARCHAR, \"Birthday\" DATETIME, \"Favourite\" BOOL DEFAULT 0)";
                     db.Execute(createContact);
                     var createPhoneNumber = "CREATE TABLE \"PhoneNumber\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"Number\" VARCHAR, \"ContactId\" INTEGER, FOREIGN KEY(\"ContactId\") REFERENCES \"Contact\"(\"ContactId\") ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createPhoneNumber);
-                    var createCountry = "CREATE TABLE \"Country\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Name\" VARCHAR)";
-                    db.Execute(createCountry);
-                    var createAddress = "CREATE TABLE \"Address\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"StreetLine1\" VARCHAR, \"StreetLine2\" VARCHAR, \"City\" VARCHAR, \"Province\" VARCHAR, \"PostalCode\" VARCHAR, \"ContactId\" INTEGER, \"CountryId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(ContactId) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(CountryId) REFERENCES Country(CountryId) ON DELETE CASCADE ON UPDATE CASCADE)";
+                    var createAddress = "CREATE TABLE \"Address\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"StreetLine1\" VARCHAR, \"StreetLine2\" VARCHAR, \"City\" VARCHAR, \"Province\" VARCHAR, \"PostalCode\" VARCHAR, \"ContactId\" INTEGER, \"Country\" VARCHAR, FOREIGN KEY(ContactId) REFERENCES Contact(ContactId) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createAddress);
                     var createEmail = "CREATE TABLE \"Email\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"Address\" VARCHAR, \"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(ContactId) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createEmail);
@@ -92,6 +90,7 @@ namespace Graphy.Core
                 contact2.Organization = "Microsoft";
                 contact2.Birthday = new DateTime(1955, 11, 28);
                 contact2.ImagePath = "BillGates.JPG";
+                contact2.Favourite = true;
                 db.Insert(contact2);
 
                 var contact3 = new Contact();
@@ -128,12 +127,13 @@ namespace Graphy.Core
 
                 var contact9 = new Contact();
                 contact9.Id = 9;
-                contact9.FirstName = "9";
+                contact9.Organization = "Null Org.";
+                contact9.Birthday = new DateTime(1999, 9, 9);
                 db.Insert(contact9);
 
                 var contact10 = new Contact();
                 contact10.Id = 10;
-                contact10.FirstName = "101010";
+                contact10.FirstName = "";
                 db.Insert(contact10);
 
                 // Phone numbers
@@ -147,16 +147,36 @@ namespace Graphy.Core
                 var number2 = new PhoneNumber();
                 number2.Id = 2;
                 number2.ContactId = 2;
-                number2.Number = "222";
+                number2.Number = "0123456789";
                 number2.Type = "Office";
                 db.Insert(number2);
                                     
                 var number3 = new PhoneNumber();
                 number3.Id = 3;
                 number3.ContactId = 2;
-                number3.Number = "333";
+                number3.Number = "0987654321";
                 number3.Type = "Home";
                 db.Insert(number3);
+
+                // Address
+                var address1 = new Address();
+                address1.Id = 1;
+                address1.Type = "Home";
+                address1.StreetLine1 = "1 Capitol Hill";
+                address1.StreetLine2 = "Apt 1";
+                address1.City = "Seattle";
+                address1.Province = "WA";
+                address1.Country = "United States";
+                address1.ContactId = 2;
+                db.Insert(address1);
+
+                var address2 = new Address();
+                address2.Id = 2;
+                address2.Type = "Work";
+                address2.StreetLine1 = "1 Microsoft Way";
+                address2.City = "Redmond";
+                address2.ContactId = 2;
+                db.Insert(address2);
 
                 // Email
                 var email1 = new Email();
