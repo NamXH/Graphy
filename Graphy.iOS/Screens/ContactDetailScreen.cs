@@ -87,6 +87,33 @@ namespace Graphy.iOS
                     Root.Add(sec);
                 }
             }
+
+            // Email
+            var emails = DatabaseManager.GetRowsRelatedToContact<Email>(contact.Id);
+            if (emails.Count > 0)
+            {
+//                CreateUiList<Email>(emails, x => x.Address, x => x.Type))
+                foreach (var email in emails)
+                {
+                    var sec = new Section(email.Type)
+                    {
+                        new StringElement(email.Address),
+                    };
+                    Root.Add(sec);
+                }
+            }
+        }
+
+        void CreateUiList<T>(List<T> list, Func<T, string> strFunc, Func<T, string> secNameFunc)
+        {
+            foreach (var x in list)
+            {
+                var sec = new Section(secNameFunc(x))
+                {
+                    new StringElement(strFunc(x))
+                };
+                Root.Add(sec);
+            }
         }
 
         void EditButtonClicked(object sender, EventArgs e)

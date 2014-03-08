@@ -38,29 +38,25 @@ namespace Graphy.Core
                     // Create tables using SQL commands
                     var createContact = "CREATE TABLE \"Contact\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"FirstName\" VARCHAR, \"MiddleName\" VARCHAR, \"LastName\" VARCHAR, \"Organization\" VARCHAR, \"ImagePath\" VARCHAR, \"Birthday\" DATETIME, \"Favourite\" BOOL DEFAULT 0)";
                     db.Execute(createContact);
-                    var createPhoneNumber = "CREATE TABLE \"PhoneNumber\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"Number\" VARCHAR, \"ContactId\" INTEGER, FOREIGN KEY(\"ContactId\") REFERENCES \"Contact\"(\"ContactId\") ON DELETE CASCADE ON UPDATE CASCADE)";
+                    var createPhoneNumber = "CREATE TABLE \"PhoneNumber\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"Number\" VARCHAR, \"ContactId\" INTEGER, FOREIGN KEY(\"ContactId\") REFERENCES \"Contact\"(\"Id\") ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createPhoneNumber);
-                    var createAddress = "CREATE TABLE \"Address\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"StreetLine1\" VARCHAR, \"StreetLine2\" VARCHAR, \"City\" VARCHAR, \"Province\" VARCHAR, \"PostalCode\" VARCHAR, \"ContactId\" INTEGER, \"Country\" VARCHAR, FOREIGN KEY(ContactId) REFERENCES Contact(ContactId) ON DELETE CASCADE ON UPDATE CASCADE)";
+                    var createAddress = "CREATE TABLE \"Address\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"StreetLine1\" VARCHAR, \"StreetLine2\" VARCHAR, \"City\" VARCHAR, \"Province\" VARCHAR, \"PostalCode\" VARCHAR, \"Country\" VARCHAR, \"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createAddress);
-                    var createEmail = "CREATE TABLE \"Email\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"Address\" VARCHAR, \"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(ContactId) ON DELETE CASCADE ON UPDATE CASCADE)";
+                    var createEmail = "CREATE TABLE \"Email\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"Address\" VARCHAR, \"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createEmail);
-                    var createSpecialDate = "CREATE TABLE \"SpecialDate\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"Date\" DATETIME, \"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(ContactId) ON DELETE CASCADE ON UPDATE CASCADE)";
+                    var createSpecialDate = "CREATE TABLE \"SpecialDate\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"Date\" DATETIME, \"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createSpecialDate);
-                    var createUrl = "CREATE TABLE \"Url\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL  DEFAULT (null) ,\"Type\" VARCHAR,\"Address\" VARCHAR,\"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(ContactId) ON DELETE CASCADE ON UPDATE CASCADE)";
+                    var createUrl = "CREATE TABLE \"Url\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL  DEFAULT (null) ,\"Type\" VARCHAR,\"Address\" VARCHAR,\"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createUrl);
-                    var createInstantMessage = "CREATE TABLE \"InstantMessage\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"Nickname\" VARCHAR, \"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(ContactId) ON DELETE CASCADE ON UPDATE CASCADE)";
+                    var createInstantMessage = "CREATE TABLE \"InstantMessage\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Type\" VARCHAR, \"Nickname\" VARCHAR, \"ContactId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createInstantMessage);
-                    var createOrganization = "CREATE TABLE \"Organization\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Name\" VARCHAR)";
-                    db.Execute(createOrganization);
-                    var createContactOrganizationMap = "CREATE TABLE \"ContactOrganizationMap\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"ContactId\" INTEGER NOT NULL , \"OrganizationId\" INTEGER NOT NULL, FOREIGN KEY(ContactId) REFERENCES Contact(ContactId) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(OrganizationId) REFERENCES Organization(OrganizationId) ON DELETE CASCADE ON UPDATE CASCADE )";
-                    db.Execute(createContactOrganizationMap);
                     var createTag = "CREATE TABLE \"Tag\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Name\" VARCHAR, \"ExtraInfo\" VARCHAR)";
                     db.Execute(createTag);
-                    var createContactTagMap = "CREATE TABLE \"ContactTagMap\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL, \"ContactId\" INTEGER NOT NULL, \"TagId\" INTEGER NOT NULL, FOREIGN KEY(ContactId) REFERENCES Contact(ContactId) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(TagId) REFERENCES Tag(TagId) ON DELETE CASCADE ON UPDATE CASCADE)";
+                    var createContactTagMap = "CREATE TABLE \"ContactTagMap\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL, \"ContactId\" INTEGER, \"TagId\" INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(TagId) REFERENCES Tag(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createContactTagMap);
                     var createConnectionType = "CREATE TABLE \"ConnectionType\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"Name\" VARCHAR)";
                     db.Execute(createConnectionType);
-                    var createConnection = "CREATE TABLE \"Connection\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"ExtraInfo\" VARCHAR, \"FromContactId\" INTEGER NOT NULL , \"ToContactId\" INTEGER, \"ConnectionTypeId\" INTEGER, FOREIGN KEY(FromContactId) REFERENCES Contact(ContactId) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(ToContactId) REFERENCES Contact(ContactId) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(ConnectionTypeId) REFERENCES ConnectionType(ConnectionTypeId) ON DELETE CASCADE ON UPDATE CASCADE)";
+                    var createConnection = "CREATE TABLE \"Connection\" (\"Id\" INTEGER PRIMARY KEY  NOT NULL , \"ExtraInfo\" VARCHAR, \"FromContactId\" INTEGER, \"ToContactId\" INTEGER, \"ConnectionTypeId\" INTEGER, FOREIGN KEY(FromContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(ToContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(ConnectionTypeId) REFERENCES ConnectionType(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createConnection);
                 }
 
@@ -182,6 +178,7 @@ namespace Graphy.Core
                 var email1 = new Email();
                 email1.Id = 2;
                 email1.Address = "bill@microsoft.com";
+                email1.Type = "Work";
                 email1.ContactId = 2;
                 db.Insert(email1);
 
