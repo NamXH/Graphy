@@ -139,6 +139,7 @@ namespace Graphy.iOS
         {
             ContactDetailScreen contactDetail = new ContactDetailScreen(_items[_keys[indexPath.Section]][indexPath.Row]);
             _tableScreenNavigation.PushViewController(contactDetail, true);
+            tableView.DeselectRow(indexPath, true);
         }
     }
 }
