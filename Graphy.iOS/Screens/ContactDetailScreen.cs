@@ -23,12 +23,15 @@ namespace Graphy.iOS
                 var imagePath = contact.ImagePath != null ? "Images/" + contact.ImagePath : "Images/UnknownIcon.jpg";
                 Root.Add(new Section(contact.Organization)
                 {
-                    new BadgeElement(UIImage.FromBundle(imagePath), fullName)
+                    new BadgeElement(UIImage.FromBundle(imagePath), fullName),
                 });
             }
             else if (!string.IsNullOrEmpty(contact.Organization))
             {
-                Root.Add(new Section("Organization") { new StringElement(contact.Organization) });
+                Root.Add(new Section("Organization")
+                { 
+                    new StringElement(contact.Organization), 
+                });
             }
 
             // Birthday
@@ -43,39 +46,36 @@ namespace Graphy.iOS
 
             // Addresses
             var addresses = DatabaseManager.GetRowsRelatedToContact<Address>(contact.Id);
-            if (addresses.Count > 0)
+            foreach (var address in addresses)
             {
-                foreach (var address in addresses)
+                var sec = new Section(address.Type);
+
+                if (!string.IsNullOrEmpty(address.StreetLine1))
                 {
-                    var sec = new Section(address.Type);
-
-                    if (!string.IsNullOrEmpty(address.StreetLine1))
-                    {
-                        sec.Add(new StringElement(address.StreetLine1));
-                    }
-                    if (!string.IsNullOrEmpty(address.StreetLine2))
-                    {
-                        sec.Add(new StringElement(address.StreetLine2));
-                    }
-                    if (!string.IsNullOrEmpty(address.City))
-                    {
-                        sec.Add(new StringElement(address.City));
-                    }
-                    if (!string.IsNullOrEmpty(address.Province))
-                    {
-                        sec.Add(new StringElement(address.Province));
-                    }
-                    if (!string.IsNullOrEmpty(address.Country))
-                    {
-                        sec.Add(new StringElement(address.Country));
-                    }
-                    if (!string.IsNullOrEmpty(address.PostalCode))
-                    {
-                        sec.Add(new StringElement(address.PostalCode));
-                    }
-
-                    Root.Add(sec);
+                    sec.Add(new StringElement(address.StreetLine1));
                 }
+                if (!string.IsNullOrEmpty(address.StreetLine2))
+                {
+                    sec.Add(new StringElement(address.StreetLine2));
+                }
+                if (!string.IsNullOrEmpty(address.City))
+                {
+                    sec.Add(new StringElement(address.City));
+                }
+                if (!string.IsNullOrEmpty(address.Province))
+                {
+                    sec.Add(new StringElement(address.Province));
+                }
+                if (!string.IsNullOrEmpty(address.Country))
+                {
+                    sec.Add(new StringElement(address.Country));
+                }
+                if (!string.IsNullOrEmpty(address.PostalCode))
+                {
+                    sec.Add(new StringElement(address.PostalCode));
+                }
+
+                Root.Add(sec);
             }
 
             // Emails
@@ -93,16 +93,40 @@ namespace Graphy.iOS
             // Special Dates
             var dates = DatabaseManager.GetRowsRelatedToContact<SpecialDate>(contact.Id);
             CreateUiList<SpecialDate>(dates, x => x.Type, x => x.Date.ToShortDateString());
+
+            // Tags
+            var tagMaps = DatabaseManager.GetRowsRelatedToContact<ContactTagMap>(contact.Id);
+            var tagIds = new List<int>();
+            foreach (var tagMap in tagMaps)
+            {
+                tagIds.Add(tagMap.TagId);
+            }
+            var tags = DatabaseManager.GetRows<Tag>(tagIds);
+            CreateUiList<Tag>(tags, x => x.Name, x => x.Detail);
+
+            // Connections
+
+            // Favourite
+            var favourite = new BooleanElement("Favourite", contact.Favourite);
+            favourite.ValueChanged += (object sender, EventArgs e) =>
+            {
+                contact.Favourite = favourite.Value;
+            };
+            var favSection = new Section();
+            favSection.Add(favourite);
+            Root.Add(favSection);
         }
 
-        void CreateUiList<T>(IList<T> list, Func<T, string> sectionNameFunc, Func<T, string> elementName)
+        void CreateUiList<T>(IList<T> list, Func<T, string> SectionNameFunc, Func<T, string> ElementName)
         {
             foreach (var x in list)
             {
-                var section = new Section(sectionNameFunc(x))
+                var section = new Section(SectionNameFunc(x));
+                var element = ElementName(x);
+                if (!string.IsNullOrEmpty(element))
                 {
-                    new StringElement(elementName(x))
-                };
+                    section.Add(new StringElement(element));
+                }
 
                 Root.Add(section);
             }

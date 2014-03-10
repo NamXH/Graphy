@@ -50,7 +50,7 @@ namespace Graphy.Core
                     db.Execute(createUrl);
                     var createInstantMessage = "CREATE TABLE InstantMessage (Id INTEGER PRIMARY KEY NOT NULL, Type VARCHAR, Nickname VARCHAR, ContactId INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createInstantMessage);
-                    var createTag = "CREATE TABLE Tag (Id INTEGER PRIMARY KEY NOT NULL, Name VARCHAR, ExtraInfo VARCHAR)";
+                    var createTag = "CREATE TABLE Tag (Id INTEGER PRIMARY KEY NOT NULL, Name VARCHAR, Detail VARCHAR)";
                     db.Execute(createTag);
                     var createContactTagMap = "CREATE TABLE ContactTagMap (Id INTEGER PRIMARY KEY NOT NULL, ContactId INTEGER, TagId INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(TagId) REFERENCES Tag(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createContactTagMap);
@@ -213,6 +213,38 @@ namespace Graphy.Core
                 date1.ContactId = 2;
                 db.Insert(date1);
 
+                // Tags
+                var tag1 = new Tag()
+                {
+                    Id = 1,
+                    Name = "Colleague",
+                    Detail = "Chairman of Microsoft",
+                };
+                db.Insert(tag1);
+
+                var tag2 = new Tag()
+                { 
+                    Id = 2,
+                    Name = "Important",
+                };
+                db.Insert(tag2);
+
+                var tagMap1 = new ContactTagMap()
+                {
+                    Id = 1,
+                    ContactId = 2,
+                    TagId = 1,
+                };
+                db.Insert(tagMap1);
+
+                var tagMap2 = new ContactTagMap()
+                {
+                    Id = 2,
+                    ContactId = 2,
+                    TagId = 2,
+                };
+                db.Insert(tagMap2);
+
                 Debug.WriteLine("stop adding data");
             }
         }
@@ -225,11 +257,19 @@ namespace Graphy.Core
             }
         }
 
-        public static T GetRows<T>(int primaryKey) where T : IPrimaryKeyContainer, new()
+        public static T GetRow<T>(int id) where T : IIdContainer, new()
         {
             using (var db = new SQLite.SQLiteConnection(_dbPath))
             {
-                return db.Table<T>().Where(v => v.Id == primaryKey).FirstOrDefault();
+                return db.Table<T>().Where(x => x.Id == id).FirstOrDefault();
+            }
+        }
+
+        public static IList<T> GetRows<T>(IList<int> idList) where T : IIdContainer, new()
+        {
+            using (var db = new SQLite.SQLiteConnection(_dbPath))
+            {
+                return db.Table<T>().Where(x => idList.Contains(x.Id)).ToList();
             }
         }
 
@@ -237,7 +277,7 @@ namespace Graphy.Core
         {
             using (var db = new SQLite.SQLiteConnection(_dbPath))
             {
-                return db.Table<T>().Where(v => v.ContactId == contactId).ToList();
+                return db.Table<T>().Where(x => x.ContactId == contactId).ToList();
             }
         }
     }
