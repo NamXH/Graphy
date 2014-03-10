@@ -35,6 +35,15 @@ namespace Graphy.Core
         public DateTime Birthday { get; set; }
 
         public bool Favourite { get; set; }
+
+        public string GetFullName()
+        {
+            string firstName = !string.IsNullOrEmpty(FirstName) ? FirstName+" " : FirstName;
+            string middleName = !string.IsNullOrEmpty(MiddleName) ? MiddleName+" " : MiddleName;
+            string lastName = !string.IsNullOrEmpty(LastName) ? LastName : LastName;
+
+            return firstName + middleName + lastName;
+        }
     }
 
     public class PhoneNumber : IPrimaryKeyContainer, IContactIdRelated

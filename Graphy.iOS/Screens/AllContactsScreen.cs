@@ -118,7 +118,7 @@ namespace Graphy.iOS
             {
                 cell = new UITableViewCell(UITableViewCellStyle.Default, CellId);
             }
-            cell.TextLabel.Text = DatabaseHelper.GetFullName(_items[_keys[indexPath.Section]][indexPath.Row]);
+            cell.TextLabel.Text = _items[_keys[indexPath.Section]][indexPath.Row].GetFullName();
 
             return cell;
         }

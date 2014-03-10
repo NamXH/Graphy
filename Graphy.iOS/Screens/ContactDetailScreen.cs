@@ -17,7 +17,7 @@ namespace Graphy.iOS
             Root = new RootElement("");
 
             // Image & name & organization
-            var fullName = DatabaseHelper.GetFullName(contact);
+            var fullName = contact.GetFullName();
             if (!(string.IsNullOrEmpty(fullName) && contact.ImagePath == null))
             {
                 var imagePath = contact.ImagePath != null ? "Images/" + contact.ImagePath : "Images/UnknownIcon.jpg";
@@ -79,23 +79,23 @@ namespace Graphy.iOS
             }
 
             // Emails
-            var emails = DatabaseManager.GetRowsRelatedToContact<Email>(contact.Id).ToList();
+            var emails = DatabaseManager.GetRowsRelatedToContact<Email>(contact.Id);
             CreateUiList<Email>(emails, x => x.Type, x => x.Address);
-
+//
             // Urls
-            var urls = DatabaseManager.GetRowsRelatedToContact<Url>(contact.Id).ToList();
+            var urls = DatabaseManager.GetRowsRelatedToContact<Url>(contact.Id);
             CreateUiList<Url>(urls, x => x.Type, x => x.Link);
-
+//
             // Instant Message
-            var instantMessages = DatabaseManager.GetRowsRelatedToContact<InstantMessage>(contact.Id).ToList();
+            var instantMessages = DatabaseManager.GetRowsRelatedToContact<InstantMessage>(contact.Id);
             CreateUiList<InstantMessage>(instantMessages, x => x.Type, x => x.Nickname);
 
             // Special Dates
-            var dates = DatabaseManager.GetRowsRelatedToContact<SpecialDate>(contact.Id).ToList();
+            var dates = DatabaseManager.GetRowsRelatedToContact<SpecialDate>(contact.Id);
             CreateUiList<SpecialDate>(dates, x => x.Type, x => x.Date.ToShortDateString());
         }
 
-        void CreateUiList<T>(List<T> list, Func<T, string> sectionNameFunc, Func<T, string> elementName)
+        void CreateUiList<T>(IList<T> list, Func<T, string> sectionNameFunc, Func<T, string> elementName)
         {
             foreach (var x in list)
             {
@@ -103,6 +103,7 @@ namespace Graphy.iOS
                 {
                     new StringElement(elementName(x))
                 };
+
                 Root.Add(section);
             }
         }
