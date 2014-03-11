@@ -106,15 +106,21 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Screens\AllContactsScreen.cs" />
-    <Compile Include="Screens\AllContactsScreen.designer.cs" />
+    <Compile Include="Screens\AllContactsScreen.designer.cs">
+      <DependentUpon>AllContactsScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Screens\MainScreen.cs" />
     <Compile Include="Screens\ContactDetailScreen.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup />
   <ItemGroup>
-    <InterfaceDefinition Include="Screens\AllContactsScreen_iPad.xib" />
-    <InterfaceDefinition Include="Screens\AllContactsScreen_iPhone.xib" />
+    <InterfaceDefinition Include="Screens\AllContactsScreen_iPad.xib">
+      <DependentUpon>AllContactsScreen.cs</DependentUpon>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="Screens\AllContactsScreen_iPhone.xib">
+      <DependentUpon>AllContactsScreen.cs</DependentUpon>
+    </InterfaceDefinition>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Graphy.Core\Graphy.Core.iOS.csproj">
