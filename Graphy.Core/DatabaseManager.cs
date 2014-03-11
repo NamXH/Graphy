@@ -97,7 +97,8 @@ namespace Graphy.Core
 
                 var contact4 = new Contact();
                 contact4.Id = 4;
-                contact4.FirstName = "Howard";
+                contact4.FirstName = "Satya";
+                contact4.LastName = "Nandela";
                 contact4.Birthday = new DateTime(1911, 11, 11);
                 db.Insert(contact4);
 
@@ -108,7 +109,8 @@ namespace Graphy.Core
 
                 var contact6 = new Contact();
                 contact6.Id = 6;
-                contact6.FirstName = "Young";
+                contact6.FirstName = "Jennifer";
+                contact6.LastName = "Gates";
                 db.Insert(contact6);
 
                 var contact7 = new Contact();
@@ -245,10 +247,55 @@ namespace Graphy.Core
                 };
                 db.Insert(tagMap2);
 
+                // Connnections
+                var connType1 = new ConnectionType()
+                {
+                    Id = 1,
+                    Name = "Advisor",
+                };
+                db.Insert(connType1);
+                var connType2 = new ConnectionType()
+                { 
+                    Id = 2,
+                    Name = "Daughter", 
+                };
+                db.Insert(connType2);
+
+                var conn1 = new Connection()
+                {
+                    Id = 1,
+                    FromContactId = 2,
+                    ToContactId = 4,
+                    ConnectionTypeId = 1,
+                    ExtraInfo = "Bill will advise Satya with his new CEO role.",
+                };
+                db.Insert(conn1);
+                var conn2 = new Connection()
+                {
+                    Id = 2,
+                    FromContactId = 6,
+                    ToContactId = 2,
+                    ConnectionTypeId = 2,
+                };
+                db.Insert(conn2);
+                var conn3 = new Connection()
+                {
+                    Id = 3,
+                    FromContactId = 2,
+                    ToContactId = 8,
+                    ConnectionTypeId = 1,
+                };
+                db.Insert(conn3);
+
                 Debug.WriteLine("stop adding data");
             }
         }
 
+        /// <summary>
+        /// Get all rows from a table
+        /// </summary>
+        /// <returns>The rows.</returns>
+        /// <typeparam name="T">The 1st type parameter.</typeparam>
         public static IList<T> GetRows<T>() where T : new()
         {
             using (var db = new SQLite.SQLiteConnection(_dbPath))
@@ -257,6 +304,12 @@ namespace Graphy.Core
             }
         }
 
+        /// <summary>
+        /// Get a row according to its primary key
+        /// </summary>
+        /// <returns>The row.</returns>
+        /// <param name="id">Identifier.</param>
+        /// <typeparam name="T">The 1st type parameter.</typeparam>
         public static T GetRow<T>(int id) where T : IIdContainer, new()
         {
             using (var db = new SQLite.SQLiteConnection(_dbPath))
@@ -278,6 +331,19 @@ namespace Graphy.Core
             using (var db = new SQLite.SQLiteConnection(_dbPath))
             {
                 return db.Table<T>().Where(x => x.ContactId == contactId).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Gets the connections start from a contact to other contacts
+        /// </summary>
+        /// <returns>The connections from contact.</returns>
+        /// <param name="contactId">Contact identifier.</param>
+        public static IList<Connection> GetConnectionsFromContact(int contactId)
+        {
+            using (var db = new SQLite.SQLiteConnection(_dbPath))
+            {
+                return db.Table<Connection>().Where(x => x.FromContactId == contactId).ToList();
             }
         }
     }

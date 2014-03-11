@@ -104,7 +104,30 @@ namespace Graphy.iOS
             var tags = DatabaseManager.GetRows<Tag>(tagIds);
             CreateUiList<Tag>(tags, x => x.Name, x => x.Detail);
 
-            // Connections
+            // Connections From
+            var fromConnections = DatabaseManager.GetConnectionsFromContact(contact.Id);
+
+            var fromConnectionType = new List<ConnectionType>();
+            var toContacts = new List<Contact>();
+
+            foreach (var conn in fromConnections)
+            {
+                fromConnectionType.Add(DatabaseManager.GetRow<ConnectionType>(conn.ConnectionTypeId));
+                toContacts.Add(DatabaseManager.GetRow<Contact>(conn.ToContactId));
+            }
+
+            for (int i = 0; i <= fromConnections.Count - 1; i++)
+            {
+                var section = new Section(fromConnectionType[i].Name);
+                var direction = new StringElement("=>", toContacts[i].GetFullName());
+                section.Add(direction);
+                if (!string.IsNullOrEmpty(fromConnections[i].ExtraInfo))
+                {
+                    var extra = new MultilineElement(fromConnections[i].ExtraInfo);
+                    section.Add(extra);
+                }
+                Root.Add(section);
+            }
 
             // Favourite
             var favourite = new BooleanElement("Favourite", contact.Favourite);
