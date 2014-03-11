@@ -346,5 +346,13 @@ namespace Graphy.Core
                 return db.Table<Connection>().Where(x => x.FromContactId == contactId).ToList();
             }
         }
+
+        public static IList<Connection> GetConnectionsToContact(int contactId)
+        {
+            using (var db = new SQLite.SQLiteConnection(_dbPath))
+            {
+                return db.Table<Connection>().Where(x => x.ToContactId == contactId).ToList();
+            }
+        }
     }
 }
