@@ -35,7 +35,7 @@ namespace Graphy.iOS
             // Add buttons & name to Navigation Bar
             var leftButton = new UIBarButtonItem(UIImage.FromBundle("Icons/TagsIcon.png"), UIBarButtonItemStyle.Plain, LeftButtonClicked);
             NavigationItem.LeftBarButtonItem = leftButton;
-            var rightButton = new UIBarButtonItem(UIBarButtonSystemItem.Add, RightButtonClicked);
+            var rightButton = new UIBarButtonItem(UIBarButtonSystemItem.Add, AddButtonClicked);
             NavigationItem.RightBarButtonItem = rightButton;
             NavigationItem.Title = "All Contacts";
 
@@ -50,8 +50,9 @@ namespace Graphy.iOS
         {
         }
 
-        void RightButtonClicked(object sender, EventArgs e)
+        void AddButtonClicked(object sender, EventArgs e)
         {
+            NavigationController.PushViewController(new AddEditContactScreen(), true);
         }
 
         void SearchButtonClicked(object sender, EventArgs e)
