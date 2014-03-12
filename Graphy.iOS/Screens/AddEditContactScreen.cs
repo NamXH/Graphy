@@ -18,6 +18,21 @@ namespace Graphy.iOS
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Done, DoneButtonClicked);
 
             Root = new RootElement("");
+
+            // Phone numbers
+            var phoneSection = new Section();
+            Root.Add(phoneSection);
+
+
+
+            var phoneLoadMore = new LoadMoreElement("Add More Phone Numbers", "Loading...", lme =>
+            {
+                lme.Animating = false;
+                phoneSection.Insert(phoneSection.Count - 1, new StringElement("abc"));
+
+                var a = new EntryElement();
+            });
+            phoneSection.Add(phoneLoadMore);
         }
 
         public void DoneButtonClicked(object sender, EventArgs e)
