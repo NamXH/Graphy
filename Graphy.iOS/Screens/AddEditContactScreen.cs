@@ -23,14 +23,14 @@ namespace Graphy.iOS
             var phoneSection = new Section();
             Root.Add(phoneSection);
 
-
-
             var phoneLoadMore = new LoadMoreElement("Add More Phone Numbers", "Loading...", lme =>
             {
                 lme.Animating = false;
-                phoneSection.Insert(phoneSection.Count - 1, new StringElement("abc"));
 
-                var a = new EntryElement();
+                var phoneType = new StyledStringElement ("Mobile") { Accessory = UITableViewCellAccessory.DetailDisclosureButton };
+                phoneSection.Insert(phoneSection.Count - 1, phoneType);
+                var number = new EntryElement(null, "Phone Number", null);
+                phoneSection.Insert(phoneSection.Count - 1, number);
             });
             phoneSection.Add(phoneLoadMore);
         }

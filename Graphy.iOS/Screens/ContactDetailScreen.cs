@@ -34,15 +34,17 @@ namespace Graphy.iOS
                 });
             }
 
-            // Birthday
-            if (!DateTime.Equals(contact.Birthday, new DateTime(1, 1, 1)))
-            {
-                Root.Add(new Section("Birthday") { new StringElement(contact.Birthday.ToShortDateString()) });
-            }
-
             // Phone numbers
             var numbers = DatabaseManager.GetRowsRelatedToContact<PhoneNumber>(contact.Id).ToList();
             CreateUiList<PhoneNumber>(numbers, x => x.Type, x => x.Number);
+
+            // Emails
+            var emails = DatabaseManager.GetRowsRelatedToContact<Email>(contact.Id);
+            CreateUiList<Email>(emails, x => x.Type, x => x.Address);
+
+            // Urls
+            var urls = DatabaseManager.GetRowsRelatedToContact<Url>(contact.Id);
+            CreateUiList<Url>(urls, x => x.Type, x => x.Link);
 
             // Addresses
             var addresses = DatabaseManager.GetRowsRelatedToContact<Address>(contact.Id);
@@ -78,21 +80,20 @@ namespace Graphy.iOS
                 Root.Add(sec);
             }
 
-            // Emails
-            var emails = DatabaseManager.GetRowsRelatedToContact<Email>(contact.Id);
-            CreateUiList<Email>(emails, x => x.Type, x => x.Address);
-//
-            // Urls
-            var urls = DatabaseManager.GetRowsRelatedToContact<Url>(contact.Id);
-            CreateUiList<Url>(urls, x => x.Type, x => x.Link);
-//
-            // Instant Message
-            var instantMessages = DatabaseManager.GetRowsRelatedToContact<InstantMessage>(contact.Id);
-            CreateUiList<InstantMessage>(instantMessages, x => x.Type, x => x.Nickname);
+            // Birthday
+            if (!DateTime.Equals(contact.Birthday, new DateTime(1, 1, 1)))
+            {
+                Root.Add(new Section("Birthday") { new StringElement(contact.Birthday.ToShortDateString()) });
+            }
 
             // Special Dates
             var dates = DatabaseManager.GetRowsRelatedToContact<SpecialDate>(contact.Id);
             CreateUiList<SpecialDate>(dates, x => x.Type, x => x.Date.ToShortDateString());
+
+
+            // Instant Message
+            var instantMessages = DatabaseManager.GetRowsRelatedToContact<InstantMessage>(contact.Id);
+            CreateUiList<InstantMessage>(instantMessages, x => x.Type, x => x.Nickname);
 
             // Tags
             var tagMaps = DatabaseManager.GetRowsRelatedToContact<ContactTagMap>(contact.Id);
