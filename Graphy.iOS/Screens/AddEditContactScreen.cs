@@ -59,13 +59,6 @@ namespace Graphy.iOS
                 };
             });
             phoneSection.Add(phoneLoadMore);
-
-            // Connections
-//            var connectionSection = new Section();
-//            Root.Add(connectionSection);
-
-//            Root.Add(new Section() { new StyledStringElement("abc") });
-//            TableView.SetEditing(true, true);
         }
 
         public void DoneButtonClicked(object sender, EventArgs e)

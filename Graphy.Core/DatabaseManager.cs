@@ -54,10 +54,10 @@ namespace Graphy.Core
                     db.Execute(createTag);
                     var createContactTagMap = "CREATE TABLE ContactTagMap (Id INTEGER PRIMARY KEY NOT NULL, ContactId INTEGER, TagId INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(TagId) REFERENCES Tag(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createContactTagMap);
-                    var createConnectionType = "CREATE TABLE ConnectionType (Id INTEGER PRIMARY KEY NOT NULL, Name VARCHAR)";
-                    db.Execute(createConnectionType);
-                    var createConnection = "CREATE TABLE Connection (Id INTEGER PRIMARY KEY NOT NULL, ExtraInfo VARCHAR, FromContactId INTEGER, ToContactId INTEGER, ConnectionTypeId INTEGER, FOREIGN KEY(FromContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(ToContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(ConnectionTypeId) REFERENCES ConnectionType(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
-                    db.Execute(createConnection);
+                    var createRelationshipType = "CREATE TABLE RelationshipType (Id INTEGER PRIMARY KEY NOT NULL, Name VARCHAR)";
+                    db.Execute(createRelationshipType);
+                    var createRelationship = "CREATE TABLE Relationship (Id INTEGER PRIMARY KEY NOT NULL, ExtraInfo VARCHAR, FromContactId INTEGER, ToContactId INTEGER, RelationshipTypeId INTEGER, FOREIGN KEY(FromContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(ToContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(RelationshipTypeId) REFERENCES RelationshipType(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
+                    db.Execute(createRelationship);
                 }
 
                 // ## For tests
@@ -248,42 +248,42 @@ namespace Graphy.Core
                 db.Insert(tagMap2);
 
                 // Connnections
-                var connType1 = new ConnectionType()
+                var connType1 = new RelationshipType()
                 {
                     Id = 1,
                     Name = "Advisor",
                 };
                 db.Insert(connType1);
-                var connType2 = new ConnectionType()
+                var connType2 = new RelationshipType()
                 { 
                     Id = 2,
                     Name = "Daughter", 
                 };
                 db.Insert(connType2);
 
-                var conn1 = new Connection()
+                var conn1 = new Relationship()
                 {
                     Id = 1,
                     FromContactId = 2,
                     ToContactId = 4,
-                    ConnectionTypeId = 1,
+                    RelationshipTypeId = 1,
                     ExtraInfo = "Bill will advise Satya with his new CEO role.",
                 };
                 db.Insert(conn1);
-                var conn2 = new Connection()
+                var conn2 = new Relationship()
                 {
                     Id = 2,
                     FromContactId = 6,
                     ToContactId = 2,
-                    ConnectionTypeId = 2,
+                    RelationshipTypeId = 2,
                 };
                 db.Insert(conn2);
-                var conn3 = new Connection()
+                var conn3 = new Relationship()
                 {
                     Id = 3,
                     FromContactId = 2,
                     ToContactId = 8,
-                    ConnectionTypeId = 1,
+                    RelationshipTypeId = 1,
                 };
                 db.Insert(conn3);
 
@@ -335,23 +335,23 @@ namespace Graphy.Core
         }
 
         /// <summary>
-        /// Gets the connections start from a contact to other contacts
+        /// Gets the relationships start from a contact to other contacts
         /// </summary>
-        /// <returns>The connections from contact.</returns>
+        /// <returns>The relationships from contact.</returns>
         /// <param name="contactId">Contact identifier.</param>
-        public static IList<Connection> GetConnectionsFromContact(int contactId)
+        public static IList<Relationship> GetRelationshipsFromContact(int contactId)
         {
             using (var db = new SQLite.SQLiteConnection(_dbPath))
             {
-                return db.Table<Connection>().Where(x => x.FromContactId == contactId).ToList();
+                return db.Table<Relationship>().Where(x => x.FromContactId == contactId).ToList();
             }
         }
 
-        public static IList<Connection> GetConnectionsToContact(int contactId)
+        public static IList<Relationship> GetRelationshipsToContact(int contactId)
         {
             using (var db = new SQLite.SQLiteConnection(_dbPath))
             {
-                return db.Table<Connection>().Where(x => x.ToContactId == contactId).ToList();
+                return db.Table<Relationship>().Where(x => x.ToContactId == contactId).ToList();
             }
         }
     }

@@ -166,7 +166,7 @@ namespace Graphy.Core
         public int TagId { get; set; }
     }
 
-    public class ConnectionType : IIdContainer
+    public class RelationshipType : IIdContainer
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -174,7 +174,7 @@ namespace Graphy.Core
         public string Name { get; set; }
     }
 
-    public class Connection : IIdContainer
+    public class Relationship : IIdContainer
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -185,6 +185,6 @@ namespace Graphy.Core
 
         public int ToContactId { get; set; }
 
-        public int ConnectionTypeId { get; set; }
+        public int RelationshipTypeId { get; set; }
     }
 }

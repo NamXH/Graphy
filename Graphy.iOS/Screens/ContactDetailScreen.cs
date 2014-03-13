@@ -114,53 +114,53 @@ namespace Graphy.iOS
                 Root.Add(section);
             }
 
-            // Connections (From)
-            var fromConnections = DatabaseManager.GetConnectionsFromContact(contact.Id);
+            // Relationship (From)
+            var fromRelationships = DatabaseManager.GetRelationshipsFromContact(contact.Id);
 
-            var fromConnectionTypes = new List<ConnectionType>();
+            var fromRelationshipTypes = new List<RelationshipType>();
             var toContacts = new List<Contact>();
-            foreach (var conn in fromConnections)
+            foreach (var conn in fromRelationships)
             {
-                fromConnectionTypes.Add(DatabaseManager.GetRow<ConnectionType>(conn.ConnectionTypeId));
+                fromRelationshipTypes.Add(DatabaseManager.GetRow<RelationshipType>(conn.RelationshipTypeId));
                 toContacts.Add(DatabaseManager.GetRow<Contact>(conn.ToContactId));
             }
 
-            for (int i = 0; i <= fromConnections.Count - 1; i++)
+            for (int i = 0; i <= fromRelationships.Count - 1; i++)
             {
-                var section = new Section(fromConnectionTypes[i].Name);
+                var section = new Section(fromRelationshipTypes[i].Name);
 
                 var direction = new StringElement("=>", toContacts[i].GetFullName());
                 section.Add(direction);
 
-                if (!string.IsNullOrEmpty(fromConnections[i].ExtraInfo))
+                if (!string.IsNullOrEmpty(fromRelationships[i].ExtraInfo))
                 {
-                    var extra = new MultilineElement(fromConnections[i].ExtraInfo);
+                    var extra = new MultilineElement(fromRelationships[i].ExtraInfo);
                     section.Add(extra);
                 }
                 Root.Add(section);
             }
 
-            // Connection (To)
-            var toConnections = DatabaseManager.GetConnectionsToContact(contact.Id);
+            // Relationships (To)
+            var toRelationships = DatabaseManager.GetRelationshipsToContact(contact.Id);
 
-            var toConnectionTypes = new List<ConnectionType>();
+            var toRelationshipTypes = new List<RelationshipType>();
             var fromContacts = new List<Contact>();
-            foreach (var conn in toConnections)
+            foreach (var conn in toRelationships)
             {
-                toConnectionTypes.Add(DatabaseManager.GetRow<ConnectionType>(conn.ConnectionTypeId));
+                toRelationshipTypes.Add(DatabaseManager.GetRow<RelationshipType>(conn.RelationshipTypeId));
                 fromContacts.Add(DatabaseManager.GetRow<Contact>(conn.FromContactId));
             }
 
-            for (int i = 0; i <= toConnections.Count - 1; i++)
+            for (int i = 0; i <= toRelationships.Count - 1; i++)
             {
-                var section = new Section(toConnectionTypes[i].Name);
+                var section = new Section(toRelationshipTypes[i].Name);
 
                 var direction = new StringElement("<=", fromContacts[i].GetFullName());
                 section.Add(direction);
 
-                if (!string.IsNullOrEmpty(toConnections[i].ExtraInfo))
+                if (!string.IsNullOrEmpty(toRelationships[i].ExtraInfo))
                 {
-                    var extra = new MultilineElement(toConnections[i].ExtraInfo);
+                    var extra = new MultilineElement(toRelationships[i].ExtraInfo);
                     section.Add(extra);
                 }
                 Root.Add(section);
