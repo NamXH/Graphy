@@ -52,7 +52,7 @@ namespace Graphy.iOS
 
         void AddButtonClicked(object sender, EventArgs e)
         {
-            NavigationController.PushViewController(new AddEditContactScreen(), true);
+            NavigationController.PushViewController(new AddEditContactScreen(), false);
         }
 
         void SearchButtonClicked(object sender, EventArgs e)
@@ -66,7 +66,6 @@ namespace Graphy.iOS
     public class AllContactsTableSource : UITableViewSource
     {
         UINavigationController _tableScreenNavigation;
-
         string CellId = "TableCell";
         string[] _keys = new string[27];
         Dictionary<string, List<Contact>> _items = new Dictionary<string, List<Contact>>();
