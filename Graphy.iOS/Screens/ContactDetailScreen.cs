@@ -90,7 +90,6 @@ namespace Graphy.iOS
             var dates = DatabaseManager.GetRowsRelatedToContact<SpecialDate>(contact.Id);
             CreateUiList<SpecialDate>(dates, x => x.Type, x => x.Date.ToShortDateString());
 
-
             // Instant Message
             var instantMessages = DatabaseManager.GetRowsRelatedToContact<InstantMessage>(contact.Id);
             CreateUiList<InstantMessage>(instantMessages, x => x.Type, x => x.Nickname);

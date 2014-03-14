@@ -247,7 +247,7 @@ namespace Graphy.Core
                 };
                 db.Insert(tagMap2);
 
-                // Connnections
+                // Relationship
                 var connType1 = new RelationshipType()
                 {
                     Id = 1,

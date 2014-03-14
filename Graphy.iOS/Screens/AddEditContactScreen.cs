@@ -30,6 +30,7 @@ namespace Graphy.iOS
                 var phoneType = new StyledStringElement("Mobile") { Accessory = UITableViewCellAccessory.DetailDisclosureButton };
                 phoneSection.Insert(phoneSection.Count - 1, phoneType);
                 var phoneNumber = new EntryElement(null, "Phone Number", null);
+                phoneNumber.KeyboardType = UIKeyboardType.NumberPad;
                 phoneSection.Insert(phoneSection.Count - 1, phoneNumber);
 
                 var deleteButton = new StyledStringElement("Delete This Number") 

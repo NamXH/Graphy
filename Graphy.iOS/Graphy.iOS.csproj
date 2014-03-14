@@ -112,6 +112,7 @@
     <Compile Include="Screens\MainScreen.cs" />
     <Compile Include="Screens\ContactDetailScreen.cs" />
     <Compile Include="Screens\AddEditContactScreen.cs" />
+    <Compile Include="Screens\LabelListScreen.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup />
