@@ -33,12 +33,13 @@ namespace Graphy.iOS
                 phoneNumber.KeyboardType = UIKeyboardType.NumberPad;
                 phoneSection.Insert(phoneSection.Count - 1, phoneNumber);
 
-                var deleteButton = new StyledStringElement("Delete This Number") 
+                var deleteButton = new StyledStringElement("Delete This Number")
                 {
                     TextColor = UIColor.Red,
                 };
 
-                deleteButton.Tapped += () =>  {
+                deleteButton.Tapped += () =>
+                {
                     phoneSection.Remove(phoneType);
                     phoneSection.Remove(phoneNumber);
                     phoneSection.Remove(deleteButton);
@@ -60,6 +61,43 @@ namespace Graphy.iOS
                 };
             });
             phoneSection.Add(phoneLoadMore);
+
+            // Photo
+            var photoSection = new Section();
+            var photoBadge = new BadgeElement(UIImage.FromBundle("Images/UnknownIcon.jpg"), "");
+            photoBadge.Tapped += () =>
+            {
+                var imagePicker = new UIImagePickerController();
+                imagePicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+                imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes(UIImagePickerControllerSourceType.PhotoLibrary);
+
+                imagePicker.FinishedPickingMedia += (sender, e) =>
+                {
+//                    if (e.Info[UIImagePickerController.MediaType].ToString() == "public.image")
+                    Console.WriteLine("pick");
+                    UIImage originalImage = e.Info[UIImagePickerController.OriginalImage] as UIImage;
+//                    photoBadge = new BadgeElement(originalImage, "");
+                    var photoBadgeNew = new BadgeElement(originalImage, ""); 
+                    photoSection.Remove(photoBadge);
+                    photoSection.Add(photoBadgeNew);
+                    imagePicker.DismissViewController(true, null);
+                }; 
+
+                imagePicker.Canceled += (sender, evt) =>
+                {
+                    Console.WriteLine("picker cancelled");
+                    imagePicker.DismissViewController(true, null);
+                };
+
+                NavigationController.PresentViewController(imagePicker, true, null);
+            };
+            photoSection.Add(photoBadge);
+            Root.Add(photoSection);
+        }
+
+        public void EditPhoto()
+        {
+
         }
 
         public void DoneButtonClicked(object sender, EventArgs e)
