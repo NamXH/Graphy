@@ -52,7 +52,9 @@ namespace Graphy.iOS
 
         void AddButtonClicked(object sender, EventArgs e)
         {
-            NavigationController.PushViewController(new AddEditContactScreen(), false);
+            var addContactsScreen = new AddEditContactScreen();
+            var navigation = new UINavigationController(addContactsScreen);
+            NavigationController.PresentViewController(navigation, true, null);
         }
 
         void SearchButtonClicked(object sender, EventArgs e)
