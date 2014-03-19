@@ -73,19 +73,18 @@ namespace Graphy.iOS
 
                 imagePicker.FinishedPickingMedia += (sender, e) =>
                 {
-//                    if (e.Info[UIImagePickerController.MediaType].ToString() == "public.image")
-                    Console.WriteLine("pick");
-                    UIImage originalImage = e.Info[UIImagePickerController.OriginalImage] as UIImage;
-//                    photoBadge = new BadgeElement(originalImage, "");
-                    var photoBadgeNew = new BadgeElement(originalImage, ""); 
-                    photoSection.Remove(photoBadge);
-                    photoSection.Add(photoBadgeNew);
+                    if (e.Info[UIImagePickerController.MediaType].ToString() == "public.image")
+                    {
+                        UIImage originalImage = e.Info[UIImagePickerController.OriginalImage] as UIImage;
+                        var photoBadgeNew = new BadgeElement(originalImage, ""); 
+                        photoSection.Remove(photoBadge);
+                        photoSection.Add(photoBadgeNew);
+                    }
                     imagePicker.DismissViewController(true, null);
                 }; 
 
-                imagePicker.Canceled += (sender, evt) =>
+                imagePicker.Canceled += (sender, e) =>
                 {
-                    Console.WriteLine("picker cancelled");
                     imagePicker.DismissViewController(true, null);
                 };
 
@@ -93,11 +92,6 @@ namespace Graphy.iOS
             };
             photoSection.Add(photoBadge);
             Root.Add(photoSection);
-        }
-
-        public void EditPhoto()
-        {
-
         }
 
         public void DoneButtonClicked(object sender, EventArgs e)
