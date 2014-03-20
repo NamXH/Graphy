@@ -43,7 +43,7 @@ namespace Graphy.iOS
             customSection.Add(customElement);
         }
 
-        public void DoneButtonClicked(object sender, EventArgs e)
+        public void DoneButtonClicked(object sender, EventArgs args)
         {
 
         }
