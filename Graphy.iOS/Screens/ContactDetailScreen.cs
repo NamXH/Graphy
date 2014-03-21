@@ -16,7 +16,7 @@ namespace Graphy.iOS
 
             Root = new RootElement("");
 
-            // Image & name & organization
+            // Image & Name & Organization
             var fullName = contact.GetFullName();
             if (!(string.IsNullOrEmpty(fullName) && contact.ImageName == null))
             {

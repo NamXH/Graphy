@@ -11,7 +11,7 @@ namespace Graphy.iOS
     public partial class AddEditContactScreen : DialogViewController
     {
         UINavigationController _rootContainerNavigationController;
-        Section _photoSection, _phoneSection, _nameSection, _emailSection;
+        Section _photoSection, _phoneSection, _nameSection, _emailSection, _urlSection, _instantMsgSection;
         BadgeElement _photoBadge;
         UIImage _profilePhoto;
 
@@ -57,7 +57,20 @@ namespace Graphy.iOS
             // Emails
             _emailSection = new Section("Emails");
             Root.Add(_emailSection);
+            var emailLoadMore = new LoadMoreElement("Add More Emails", "Loading...", EmailLoadMoreTapped);
+            _emailSection.Add(emailLoadMore);
 
+            // Urls
+            _urlSection = new Section("Urls");
+            Root.Add(_urlSection);
+            var urlLoadMore = new LoadMoreElement("Add More Urls", "Loading...", UrlLoadMoreTapped);
+            _urlSection.Add(urlLoadMore);
+
+            // IMs
+            _instantMsgSection = new Section("Instant Messages");
+            Root.Add(_instantMsgSection);
+            var instantMsgLoadMore = new LoadMoreElement("Add More Instant Messages", "Loading...", InstantMsgLoadMoreTapped);
+            _instantMsgSection.Add(instantMsgLoadMore);
         }
 
         public void PhotoBadgeTapped()
@@ -96,46 +109,69 @@ namespace Graphy.iOS
 
         public void PhoneLoadMoreTapped(LoadMoreElement lme)
         {
+            var labels = new List<string>() { "Mobile", "Home", "Work", "Main", "Home Fax", "Work Fax", "Pager", "Other" };
+            PopulateElements(lme, _phoneSection, "Mobile", "Phone Number", UIKeyboardType.NumberPad, "Delete This Number", labels);
+        }
+
+        public void EmailLoadMoreTapped(LoadMoreElement lme)
+        {
+            var labels = new List<string>() { "Home", "Work", "Oher" };
+            PopulateElements(lme, _emailSection, "Home", "Email Address", UIKeyboardType.EmailAddress, "Delete This Email", labels);
+        }
+
+        public void UrlLoadMoreTapped(LoadMoreElement lme)
+        {
+            var labels = new List<string>() { "Home Page", "Home", "Work" };
+            PopulateElements(lme, _urlSection, "Home Page", "Url", UIKeyboardType.Url, "Delete This Url", labels);
+        }
+
+        public void InstantMsgLoadMoreTapped(LoadMoreElement lme)
+        {
+            var labels = new List<string>() { "Skype", "Hangouts", "Facebook Messenger", "MSN", "Yahoo", "AIM", "QQ" };
+            PopulateElements(lme, _instantMsgSection, "Skype", "IM", UIKeyboardType.ASCIICapable, "Delete This IM", labels);
+        }
+
+        public void PopulateElements(LoadMoreElement lme, Section section, string typeLable, string valueLabel, UIKeyboardType entryKeyboardType, string deleteLabel, IList<string> labelList)
+        {
             lme.Animating = false;
 
-            var phoneType = new StyledStringElement("Mobile") { Accessory = UITableViewCellAccessory.DetailDisclosureButton };
-            _phoneSection.Insert(_phoneSection.Count - 1, phoneType);
-            var phoneNumber = new EntryElement(null, "Phone Number", null);
-            phoneNumber.KeyboardType = UIKeyboardType.NumberPad;
-            _phoneSection.Insert(_phoneSection.Count - 1, phoneNumber);
+            var type = new StyledStringElement(typeLable) { Accessory = UITableViewCellAccessory.DetailDisclosureButton };
+            section.Insert(section.Count - 1, type);
+            var value = new EntryElement(null, valueLabel, null);
+            value.KeyboardType = entryKeyboardType;
+            section.Insert(section.Count - 1, value);
 
-            var deleteButton = new StyledStringElement("Delete This Number")
+            var deleteButton = new StyledStringElement(deleteLabel)
             {
                 TextColor = UIColor.Red,
             };
 
             deleteButton.Tapped += () =>
             {
-                _phoneSection.Remove(phoneType);
-                _phoneSection.Remove(phoneNumber);
-                _phoneSection.Remove(deleteButton);
+                section.Remove(type);
+                section.Remove(value);
+                section.Remove(deleteButton);
             };
 
             // Show/Hide Delete Button
             var deleteButtonOn = false;
-            phoneType.AccessoryTapped += () =>
+            type.AccessoryTapped += () =>
             {
                 if (!deleteButtonOn)
                 {
                     deleteButtonOn = true;
-                    _phoneSection.Insert(phoneType.IndexPath.Row + 2, UITableViewRowAnimation.Bottom, deleteButton);
+                    section.Insert(type.IndexPath.Row + 2, UITableViewRowAnimation.Bottom, deleteButton);
                 }
                 else
                 {
                     deleteButtonOn = false;
-                    _phoneSection.Remove(deleteButton);
+                    section.Remove(deleteButton);
                 }
             };
 
-            phoneType.Tapped += () =>
+            type.Tapped += () =>
             {
-                var labels = new List<string>() { "Mobile", "Home", "Work", "Main", "Home Fax", "Work Fax", "Pager", "Other" };
-                var labelScreen = new LabelListScreen(labels);
+                var labelScreen = new LabelListScreen(labelList);
                 var navigation = new UINavigationController(labelScreen);
                 NavigationController.PresentViewController(navigation, true, null);
             };
