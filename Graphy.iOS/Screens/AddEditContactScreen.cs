@@ -168,6 +168,8 @@ namespace Graphy.iOS
             contact.Organization = ((EntryElement)_nameSection[3]).Value ?? null;
 
             DatabaseManager.AddNewContact(contact);
+            _rootContainerNavigationController.PopViewControllerAnimated(false);
+            _rootContainerNavigationController.PushViewController(new AllContactsScreen(), false);
             NavigationController.DismissViewController(true, null);
         }
     }
