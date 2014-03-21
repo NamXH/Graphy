@@ -97,7 +97,7 @@
     <BundleResource Include="Icons\TagsIcon.png" />
     <BundleResource Include="Images\UnknownIcon.jpg" />
     <BundleResource Include="Images\AndyRubin.jpg" />
-    <BundleResource Include="Images\BillGates.jpg" />
+    <BundleResource Include="Images\Bill.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />

@@ -26,7 +26,7 @@ namespace Graphy.Core
                 File.Delete(_dbPath);
             }
 
-            //Create DB if not exists
+            // Create DB if not exists
             if (!File.Exists(_dbPath))
             {
                 using (var db = new SQLite.SQLiteConnection(_dbPath))
@@ -36,7 +36,7 @@ namespace Graphy.Core
                     db.Execute(foreignKeyOn);
 
                     // Create tables using SQL commands
-                    var createContact = "CREATE TABLE Contact (Id INTEGER PRIMARY KEY NOT NULL, FirstName VARCHAR, MiddleName VARCHAR, LastName VARCHAR, Organization VARCHAR, ImagePath VARCHAR, Birthday DATETIME, Favourite BOOL DEFAULT 0)";
+                    var createContact = "CREATE TABLE Contact (Id INTEGER PRIMARY KEY NOT NULL, FirstName VARCHAR, MiddleName VARCHAR, LastName VARCHAR, Organization VARCHAR, ImageName VARCHAR, Birthday DATETIME, Favourite BOOL DEFAULT 0)";
                     db.Execute(createContact);
                     var createPhoneNumber = "CREATE TABLE PhoneNumber (Id INTEGER PRIMARY KEY NOT NULL, Type VARCHAR, Number VARCHAR, ContactId INTEGER, FOREIGN KEY(ContactId) REFERENCES Contact(Id) ON DELETE CASCADE ON UPDATE CASCADE)";
                     db.Execute(createPhoneNumber);
@@ -85,7 +85,7 @@ namespace Graphy.Core
                 contact2.LastName = "Gates";
                 contact2.Organization = "Microsoft";
                 contact2.Birthday = new DateTime(1955, 11, 28);
-                contact2.ImagePath = "BillGates.JPG";
+                contact2.ImageName = "Bill.jpg";
                 contact2.Favourite = true;
                 db.Insert(contact2);
 
@@ -352,6 +352,24 @@ namespace Graphy.Core
             using (var db = new SQLite.SQLiteConnection(_dbPath))
             {
                 return db.Table<Relationship>().Where(x => x.ToContactId == contactId).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Creates a new contact.
+        /// Demo implementation. Should change later.
+        /// </summary>
+        public static void AddNewContact(Contact contact)
+        {
+            var contacts = GetRows<Contact>();
+            var contactsCount = contacts.Count;
+
+            var id = contactsCount;
+            contact.Id = id + 1;
+
+            using (var db = new SQLite.SQLiteConnection(_dbPath))
+            {
+                db.Insert(contact);
             }
         }
     }

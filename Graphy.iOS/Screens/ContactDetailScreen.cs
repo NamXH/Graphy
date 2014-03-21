@@ -18,12 +18,26 @@ namespace Graphy.iOS
 
             // Image & name & organization
             var fullName = contact.GetFullName();
-            if (!(string.IsNullOrEmpty(fullName) && contact.ImagePath == null))
+            if (!(string.IsNullOrEmpty(fullName) && contact.ImageName == null))
             {
-                var imagePath = contact.ImagePath != null ? "Images/" + contact.ImagePath : "Images/UnknownIcon.jpg";
+                var imageName = contact.ImageName ?? "UnknownIcon.jpg";
+                var directory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                var imagePath = System.IO.Path.Combine(directory, imageName);
+
+                // In case cannot load image from Personal(Document) folder, load UnknownIcon from Images folder
+                UIImage image;
+                try
+                {
+                    image = new UIImage(imagePath);
+                }
+                catch(Exception)
+                {
+                    image = UIImage.FromBundle("Images/UnknownIcon.jpg");
+                }
+
                 Root.Add(new Section(contact.Organization)
                 {
-                    new BadgeElement(UIImage.FromBundle(imagePath), fullName),
+                    new BadgeElement(image, fullName),
                 });
             }
             else if (!string.IsNullOrEmpty(contact.Organization))

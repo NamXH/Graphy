@@ -4,17 +4,22 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using MonoTouch.Dialog;
+using Graphy.Core;
 
 namespace Graphy.iOS
 {
     public partial class AddEditContactScreen : DialogViewController
     {
-        Section _photoSection, _phoneSection, _nameSection;
+        UINavigationController _rootContainerNavigationController;
+
+        Section _photoSection, _phoneSection, _nameSection, _emailSection;
         BadgeElement _photoBadge;
         UIImage _profilePhoto;
 
-        public AddEditContactScreen() : base(UITableViewStyle.Grouped, null, true)
+        public AddEditContactScreen(UINavigationController nav) : base(UITableViewStyle.Grouped, null, true)
         {
+            _rootContainerNavigationController = nav;
+
             // Navigation
             NavigationItem.LeftBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Cancel, (sender, args) =>
             {
@@ -49,6 +54,11 @@ namespace Graphy.iOS
             Root.Add(_phoneSection);
             var phoneLoadMore = new LoadMoreElement("Add More Phone Numbers", "Loading...", PhoneLoadMoreTapped);
             _phoneSection.Add(phoneLoadMore);
+
+            // Emails
+            _emailSection = new Section("Emails");
+            Root.Add(_emailSection);
+
         }
 
         public void PhotoBadgeTapped()
@@ -69,7 +79,10 @@ namespace Graphy.iOS
                         _photoBadge.Tapped += PhotoBadgeTapped;
                         _photoSection.Add(_photoBadge);
                     }
-
+                }
+                else
+                {
+                    new UIAlertView("Warning", "Please Choose An Image", null, "OK", null).Show();
                 }
                 imagePicker.DismissViewController(true, null);
             }; 
@@ -131,12 +144,31 @@ namespace Graphy.iOS
 
         public void DoneButtonClicked(object sender, EventArgs args)
         {
-            var a = (EntryElement)_nameSection[0];
-            Console.WriteLine(a.Value);
-            var b = _phoneSection[0];
-            Console.WriteLine(b.GetType().FullName);
-            var c = (StyledStringElement)b;
-            Console.WriteLine(c.Caption);
+            var contact = new Contact();
+
+            // Photo
+            if (_profilePhoto != null)
+            {
+                contact.ImageName = Guid.NewGuid().ToString() + ".jpg";
+                var directory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                var imagePath = System.IO.Path.Combine(directory, contact.ImageName);
+
+                NSData imgData = _profilePhoto.AsJPEG();
+                NSError err = null;
+                if (!imgData.Save(imagePath, false, out err))
+                {
+                    throw new Exception(err.LocalizedDescription);
+                }
+            }
+
+            // Name
+            contact.FirstName = ((EntryElement)_nameSection[0]).Value ?? null;
+            contact.MiddleName = ((EntryElement)_nameSection[1]).Value ?? null;
+            contact.LastName = ((EntryElement)_nameSection[2]).Value ?? null;
+            contact.Organization = ((EntryElement)_nameSection[3]).Value ?? null;
+
+            DatabaseManager.AddNewContact(contact);
+            NavigationController.DismissViewController(true, null);
         }
     }
 }
