@@ -171,6 +171,14 @@ namespace Graphy.iOS
             _rootContainerNavigationController.PopViewControllerAnimated(false);
             _rootContainerNavigationController.PushViewController(new AllContactsScreen(), false);
             NavigationController.DismissViewController(true, null);
+
+            // Phone numbers
+            var enumerator = _phoneSection.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                var element = enumerator.Current;
+
+            }
         }
     }
 }
