@@ -11,7 +11,6 @@ namespace Graphy.iOS
     public partial class AddEditContactScreen : DialogViewController
     {
         UINavigationController _rootContainerNavigationController;
-
         Section _photoSection, _phoneSection, _nameSection, _emailSection;
         BadgeElement _photoBadge;
         UIImage _profilePhoto;
@@ -173,11 +172,21 @@ namespace Graphy.iOS
             NavigationController.DismissViewController(true, null);
 
             // Phone numbers
-            var enumerator = _phoneSection.GetEnumerator();
-            while (enumerator.MoveNext())
+            for (int i = 0; i <= _phoneSection.Count - 1; i++)
             {
-                var element = enumerator.Current;
+                if (_phoneSection[i].GetType() == typeof(EntryElement))
+                {
+                    if (i >= 1)
+                    {
+                        var phoneType = (StyledStringElement)_phoneSection[i - 1];
+                        var phoneNumber = (EntryElement)_phoneSection[i];
 
+                        if (!string.IsNullOrEmpty(phoneNumber.Value))
+                        {
+                            Console.WriteLine("type:" + phoneType.Caption + " number:" + phoneNumber.Value);
+                        }
+                    }
+                }
             }
         }
     }
