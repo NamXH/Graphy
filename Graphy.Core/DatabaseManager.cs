@@ -216,20 +216,22 @@ namespace Graphy.Core
                 db.Insert(date1);
 
                 // Tags
+//                var tag2 = new Tag()
+//                { 
+//                    Id = 2,
+//                    Name = "Important",
+//                };
+//                db.Insert(tag2);
+
                 var tag1 = new Tag()
                 {
                     Id = 1,
-                    Name = "Colleague",
+                    Name = "",
                     Detail = "Chairman of Microsoft",
                 };
                 db.Insert(tag1);
 
-                var tag2 = new Tag()
-                { 
-                    Id = 2,
-                    Name = "Important",
-                };
-                db.Insert(tag2);
+
 
                 var tagMap1 = new ContactTagMap()
                 {
@@ -278,14 +280,14 @@ namespace Graphy.Core
                     RelationshipTypeId = 2,
                 };
                 db.Insert(conn2);
-                var conn3 = new Relationship()
-                {
-                    Id = 3,
-                    FromContactId = 2,
-                    ToContactId = 8,
-                    RelationshipTypeId = 1,
-                };
-                db.Insert(conn3);
+//                var conn3 = new Relationship()
+//                {
+//                    Id = 3,
+//                    FromContactId = 2,
+//                    ToContactId = 8,
+//                    RelationshipTypeId = 1,
+//                };
+//                db.Insert(conn3);
 
                 Debug.WriteLine("stop adding data");
             }

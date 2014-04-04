@@ -18,6 +18,7 @@ namespace Graphy.iOS
 
             var tab1 = new UIViewController();
             tab1.Title = "one";
+            tab1.TabBarItem = new UITabBarItem(UITabBarSystemItem.Favorites, 0);
 
             var allContactsScreen = new AllContactsScreen();
             var tab2 = new UINavigationController(allContactsScreen);
@@ -29,9 +30,11 @@ namespace Graphy.iOS
 
             var tab3 = new UIViewController();
             tab3.Title = "three";
+            tab3.TabBarItem = new UITabBarItem(UITabBarSystemItem.History, 0);
 
             var tab4 = new UIViewController();
             tab4.Title = "four";
+            tab4.TabBarItem = new UITabBarItem(UITabBarSystemItem.More, 0);
 
             _tabs = new UIViewController[] { tab1, tab2, tab3, tab4 };
             this.ViewControllers = _tabs;
