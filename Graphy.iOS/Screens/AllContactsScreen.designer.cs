@@ -20,14 +20,14 @@ namespace Graphy.iOS
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (searchBar != null) {
-				searchBar.Dispose ();
-				searchBar = null;
-			}
-
 			if (contactsTable != null) {
 				contactsTable.Dispose ();
 				contactsTable = null;
+			}
+
+			if (searchBar != null) {
+				searchBar.Dispose ();
+				searchBar = null;
 			}
 		}
 	}
